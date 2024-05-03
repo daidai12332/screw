@@ -26,3 +26,9 @@ CREATE TABLE IF NOT EXISTS `screw`.`equipment` (
   `purchase_date` DATE NULL,
   PRIMARY KEY (`name`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  
+ALTER TABLE `screw`.`equipment` 
+ADD COLUMN `data_date` DATE NOT NULL AFTER `name`,
+ADD COLUMN `data_avg` MEDIUMTEXT NULL AFTER `purchase_date`,
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`name`, `data_date`);

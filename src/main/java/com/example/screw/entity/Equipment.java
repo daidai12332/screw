@@ -5,9 +5,11 @@ import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 @Entity
+@IdClass(value = EquipmentId.class)
 @Table(name = "equipment")
 public class Equipment {
 
@@ -15,9 +17,16 @@ public class Equipment {
 	@Column(name = "name")
 	private String name;              // 設備編號
 	
+	@Id
+	@Column(name = "data_date")
+	private LocalDate dataDate;       // 資料統計日期
+	
 	@Column(name = "purchase_date")
 	private LocalDate purchaseDate;   // 設備添購日期
 
+	@Column(name = "data_avg")
+	private String dataAvg;        // 資料統計內容: 狀態比例、平均電流、良率
+	
 	public Equipment() {
 		super();
 	}

@@ -5,17 +5,17 @@ public class RawObj {   // 單筆原料的 obj
 	
 	private String name;    // 原料名稱
 	
-	private int amount;     // 用量
+	private double amount;     // 用量
 	
-	private int scopeOne;   // scope1 碳排放係數
+	private double scopeOne;   // scope1 碳排放係數
 	
-	private int scopeTwo;   // scope 2 碳排放係數
+	private double scopeTwo;   // scope 2 碳排放係數
 
 	public RawObj() {
 		super();
 	}
 
-	public RawObj(String name, int amount, int scopeOne, int scopeTwo) {
+	public RawObj(String name, double amount, double scopeOne, double scopeTwo) {
 		super();
 		this.name = name;
 		this.amount = amount;
@@ -31,27 +31,27 @@ public class RawObj {   // 單筆原料的 obj
 		this.name = name;
 	}
 
-	public int getAmount() {
+	public double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(int amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 
-	public int getScopeOne() {
+	public double getScopeOne() {
 		return scopeOne;
 	}
 
-	public void setScopeOne(int scopeOne) {
+	public void setScopeOne(double scopeOne) {
 		this.scopeOne = scopeOne;
 	}
 
-	public int getScopeTwo() {
+	public double getScopeTwo() {
 		return scopeTwo;
 	}
 
-	public void setScopeTwo(int scopeTwo) {
+	public void setScopeTwo(double scopeTwo) {
 		this.scopeTwo = scopeTwo;
 	}
 	

@@ -10,48 +10,40 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity 
-@Table(name = "screw")
-public class Screw {
+@Table(name = "receive_data")
+public class ReceiveData {
 	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "id")
 	private int id;
 	
-	@Id 
 	@Column(name = "name") 
 	private String name;
 	
-	@Id 
 	@Column(name = "status") 
 	private String status;
 	
-	@Id 
 	@Column(name = "order_number") 
 	private String orderNumber;
 	
-	@Id 
 	@Column(name = "current") 
 	private double current;
 	
-	@Id 
 	@Column(name = "pass") 
 	private int pass;
 	
-	@Id 
 	@Column(name = "ng") 
 	private int ng;
 	
-	@Id 
 	@Column(name = "time") 
 	private LocalDate time;
 
-	public Screw() {
+	public ReceiveData() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public Screw(String name, String status, String orderNumber, double current, int pass, int ng,
+	public ReceiveData(String name, String status, String orderNumber, double current, int pass, int ng,
 			LocalDate time) {
 		super();
 		this.name = name;

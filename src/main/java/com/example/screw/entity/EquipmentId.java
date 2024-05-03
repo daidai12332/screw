@@ -6,7 +6,7 @@ import java.time.LocalDate;
 @SuppressWarnings("serial")
 public class EquipmentId implements Serializable {
 
-	private String name;              // 設備編號
+	private String name;              // 設備編號 或 電壓
 
 	private LocalDate dataDate;       // 資料統計日期
 

@@ -15,7 +15,7 @@ public class Equipment {
 
 	@Id
 	@Column(name = "name")
-	private String name;              // 設備編號
+	private String name;              // 設備編號 或 電壓
 	
 	@Id
 	@Column(name = "data_date")
@@ -25,7 +25,7 @@ public class Equipment {
 	private LocalDate purchaseDate;   // 設備添購日期
 
 	@Column(name = "data_avg")
-	private String dataAvg;        // 資料統計內容: 狀態比例、平均電流、良率
+	private String dataAvg;           // EquipmentDataAvgObj 轉成 String: 狀態比例、平均電流、良率
 	
 	public Equipment() {
 		super();

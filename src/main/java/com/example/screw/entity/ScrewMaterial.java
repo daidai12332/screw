@@ -19,6 +19,9 @@ public class ScrewMaterial {
 	@Column(name = "aim")
 	private int aim;          // 訂購的螺絲總量
 	
+	@Column(name = "produce")	
+	private int produce;      // 已生產的螺絲數量
+	
 	@Column(name = "weight")
 	private int weight;       // 單顆螺絲的重量(g)
 	
@@ -57,6 +60,22 @@ public class ScrewMaterial {
 		this.name = name;
 	}
 
+	public int getAim() {
+		return aim;
+	}
+
+	public void setAim(int aim) {
+		this.aim = aim;
+	}
+
+	public int getProduce() {
+		return produce;
+	}
+
+	public void setProduce(int produce) {
+		this.produce = produce;
+	}
+
 	public int getWeight() {
 		return weight;
 	}
@@ -79,5 +98,6 @@ public class ScrewMaterial {
 
 	public void setProcess(String process) {
 		this.process = process;
-	}	
+	}
+
 }

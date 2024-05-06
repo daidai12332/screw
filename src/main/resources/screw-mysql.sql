@@ -10,11 +10,11 @@ CREATE TABLE IF NOT EXISTS `receive_data` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-
 CREATE TABLE IF NOT EXISTS `screw`.`screw_material` (
   `order_no` INT NOT NULL DEFAULT 0,
   `name` VARCHAR(100) NULL,
   `aim` INT NOT NULL DEFAULT 0,
+  `produce` int DEFAULT '0',
   `weight` INT NOT NULL DEFAULT 0,
   `raw` MEDIUMTEXT NOT NULL,
   `process` MEDIUMTEXT,

@@ -1,10 +1,10 @@
 package com.example.screw.vo;
 
-public class ProcessObj {   // 單筆製程使用物/排放物的 obj
+public class ProcessObj {   // 單筆製程使用物or排放物的 obj
 	
-	private String name;    // 使用物/排放物的名稱
+	private String name;    // 使用物or排放物的名稱
 	
-	private double amount;     // 使用量/排放量
+	private double amount;     // 使用量or排放量
 
 	public ProcessObj() {
 		super();

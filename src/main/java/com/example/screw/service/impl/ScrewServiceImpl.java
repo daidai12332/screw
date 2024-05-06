@@ -93,7 +93,7 @@ public class ScrewServiceImpl implements ScrewService {
 		for (int i = 0; i < dataToday.size(); i++) {
 			// 因為有添加 order by，故 dataToday 和 sumToday 中的單號順序肯定會一樣
 			// 將過去的產量和今天的產量加總寫回總產量
-			dataToday.get(i).setProduce(dataToday.get(i).getProduce() + sumToday.get(i).getProduceTodaySum());
+			dataToday.get(i).setProduce((int) (dataToday.get(i).getProduce() + sumToday.get(i).getProduceTodaySum()));
 			// 將 process 從字串轉回物件後，針對電量的使用量進行修改(過去的用量和今天的"24小時平均每秒"用量加總)，再轉成字串寫入
 			try {
 				List<ProcessObj> processObjList = mapper.readValue(dataToday.get(i).getProcess(),
@@ -127,9 +127,9 @@ public class ScrewServiceImpl implements ScrewService {
 		// 抓取所有單號的資訊
 		List<ScrewMaterial> dataAll = screwMaterialDao.findAll();
 		// 以單號作為索引值，用來裝該單號的過去的電度和生產量，0放電度，1放生產量，2放目標量，3放重量
-		Map<Integer, List<Double>> updateData = new LinkedHashMap<>();
+		Map<String, List<Double>> updateData = new LinkedHashMap<>();
 		// 以單號作為索引值，內容是要回傳的未更新的計算結果
-		Map<Integer, CalculateInformationItem> calculateInformationItemMap = new LinkedHashMap<>();
+		Map<String, CalculateInformationItem> calculateInformationItemMap = new LinkedHashMap<>();
 		for (ScrewMaterial data : dataAll) {
 			try {
 				// 將每個原料的碳排放加總
@@ -166,7 +166,7 @@ public class ScrewServiceImpl implements ScrewService {
 		// 記得再抓取電壓喔喔喔喔喔喔喔喔!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if (CollectionUtils.isEmpty(sumRealTime)) {
 			// 電的碳排 = 總電度(累積每秒平均電流*一天的秒數*電壓)/目前產量*目標生產量*碳排係數/目標總重量
-			for (Entry<Integer, List<Double>> eachUpdate : updateData.entrySet()) {
+			for (Entry<String, List<Double>> eachUpdate : updateData.entrySet()) {
 				double powerCarbon = (eachUpdate.getValue().get(0) * 86400 * 220) / eachUpdate.getValue().get(1)
 						* eachUpdate.getValue().get(2)
 						* MaterialCarbonCoefficient.getCarbonCoefficientByName("electric").getCarbonCoefficient()
@@ -177,7 +177,7 @@ public class ScrewServiceImpl implements ScrewService {
 			}
 			// 將整理完畢的資料輸出成 List<calculateItem>，並使用 RtnCode 分辨需不需要存到 Cache
 			List<CalculateInformationItem> calculateList = new ArrayList<>();
-			for (Entry<Integer, CalculateInformationItem> eachData : calculateInformationItemMap.entrySet()) {
+			for (Entry<String, CalculateInformationItem> eachData : calculateInformationItemMap.entrySet()) {
 				calculateList.add(eachData.getValue());
 			}
 			return new CalculateInformationRes(RtnCode.SUCCESS_AND_SAVE.getCode(), RtnCode.SUCCESS_AND_SAVE.getMessage(),
@@ -185,10 +185,10 @@ public class ScrewServiceImpl implements ScrewService {
 		}
 		// 如果有開工：把今天的電度和產量加上去，接著做一樣的計算
 		int sumIndex = 0;
-		for (Entry<Integer, List<Double>> eachUpdate : updateData.entrySet()) {
+		for (Entry<String, List<Double>> eachUpdate : updateData.entrySet()) {
 			// 如果 sumIndex 還沒超過長度，表示尚有未加入統計的更新資料，且當 sumRealTime 的單號和 eachUpdate 的 key
 			// 值相同，表示這筆單號有需要添加的電度
-			if (sumIndex < sumRealTime.size() && sumRealTime.get(sumIndex).getOrderNo() == eachUpdate.getKey()) {
+			if (sumIndex < sumRealTime.size() && sumRealTime.get(sumIndex).getOrderNo().equals(eachUpdate.getKey())) {
 				// 用目前的總電度(今天的電流總和*電壓+累積每秒平均電流*一天的秒數*電壓)和總產量，估算平均每顆螺絲需要消耗的電度(總電度/總產量)，再乘以目標量，除以總重量
 				double powerTotal = sumRealTime.get(sumIndex).getCurrentSum() + eachUpdate.getValue().get(0) * 86400;
 				// 以單號作為索引值，用來裝該單號的過去的電度和生產量，0放電度，1放生產量，2放目標量，3放重量
@@ -215,7 +215,7 @@ public class ScrewServiceImpl implements ScrewService {
 		}
 		// 將整理完畢的資料輸出成 List<calculateItem> 回傳
 		List<CalculateInformationItem> calculateList = new ArrayList<>();
-		for (Entry<Integer, CalculateInformationItem> eachData : calculateInformationItemMap.entrySet()) {
+		for (Entry<String, CalculateInformationItem> eachData : calculateInformationItemMap.entrySet()) {
 			calculateList.add(eachData.getValue());
 		}
 		return new CalculateInformationRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), calculateList);

@@ -11,7 +11,7 @@ public class ScrewMaterial {
 
 	@Id
 	@Column(name = "order_no")
-	private int orderNo;      // 單號作為 pk，假設一張單號為一種螺絲
+	private String orderNo;      // 單號作為 pk，假設一張單號為一種螺絲
 	
 	@Column(name = "name")
 	private String name;      // 使用者自行取的名稱
@@ -35,7 +35,7 @@ public class ScrewMaterial {
 		super();
 	}
 
-	public ScrewMaterial(int orderNo, String name, int weight, String raw, String process) {
+	public ScrewMaterial(String orderNo, String name, int weight, String raw, String process) {
 		super();
 		this.orderNo = orderNo;
 		this.name = name;
@@ -44,11 +44,11 @@ public class ScrewMaterial {
 		this.process = process;
 	}
 
-	public int getOrderNo() {
+	public String getOrderNo() {
 		return orderNo;
 	}
 
-	public void setOrderNo(int orderNo) {
+	public void setOrderNo(String orderNo) {
 		this.orderNo = orderNo;
 	}
 

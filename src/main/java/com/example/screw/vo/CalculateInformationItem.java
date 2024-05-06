@@ -4,7 +4,7 @@ import java.util.List;
 
 public class CalculateInformationItem {
 		
-	private int orderNo;   // 單號
+	private String orderNo;   // 單號
 	
 	private String name;   // 名稱
 
@@ -24,7 +24,7 @@ public class CalculateInformationItem {
 		super();
 	}
 
-	public CalculateInformationItem(int orderNo, String name, double carbonEmission, int aim, int produce, int weight,
+	public CalculateInformationItem(String orderNo, String name, double carbonEmission, int aim, int produce, int weight,
 			List<RawObj> raw, List<ProcessObj> process) {
 		super();
 		this.orderNo = orderNo;
@@ -37,11 +37,11 @@ public class CalculateInformationItem {
 		this.process = process;
 	}
 
-	public int getOrderNo() {
+	public String getOrderNo() {
 		return orderNo;
 	}
 
-	public void setOrderNo(int orderNo) {
+	public void setOrderNo(String orderNo) {
 		this.orderNo = orderNo;
 	}
 

@@ -25,11 +25,11 @@ public interface ScrewMaterialDao extends JpaRepository<ScrewMaterial, Integer> 
 	public int updateScrewMaterial(int orderNo, String name, int aim, int weight, String raw, String process);
 
 	// 根據單號分類，將日期 >= settleStart 且 日期 <= settleEnd 的 電流量加總 和 pass加總，回傳[{單號,電流總和,產量總和}]
-	@Query(value = "SELECT new com.example.screw.vo.SettleOrderVo(orderNumber, sum(current), sum(pass)) FROM screw.ReceiveData WHERE time >= ?1 AND time <= ?2 GROUP BY orderNumber ORDER BY orderNumber")
+	@Query(value = "SELECT new com.example.screw.vo.SettleOrderVo(orderNumber, sum(current), sum(pass)) FROM ReceiveData WHERE time >= ?1 AND time <= ?2 GROUP BY orderNumber ORDER BY orderNumber")
 	public List<SettleOrderVo> sumOrderCurrentAndPass(String settleStart, String settleEnd);
 
 	// 根據單號分類，將日期 >= settleStart 且 日期 <= settleEnd 的 電流量加總 和 pass加總，回傳[{單號,電流總和,產量總和}]
-	@Query(value = "SELECT new com.example.screw.vo.SettleOrderVo(orderNumber, sum(current), sum(pass)) FROM screw.ReceiveData WHERE orderNumber = ?3 time >= ?1 AND time <= ?2 GROUP BY orderNumber ORDER BY orderNumber")
+	@Query(value = "SELECT new com.example.screw.vo.SettleOrderVo(orderNumber, sum(current), sum(pass)) FROM ReceiveData WHERE orderNumber = ?3 AND time >= ?1 AND time <= ?2 GROUP BY orderNumber ORDER BY orderNumber")
 	public SettleOrderVo sumParticularOrderCurrentAndPass(String settleStart, String settleEnd, int orderNumber);
 
 	

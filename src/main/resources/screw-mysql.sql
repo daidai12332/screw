@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `receive_data` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE IF NOT EXISTS `screw`.`screw_material` (
-  `order_no` INT NOT NULL DEFAULT 0,
+  `order_no` varchar(20) NOT NULL DEFAULT 0,
   `name` VARCHAR(100) NULL,
   `aim` INT NOT NULL DEFAULT 0,
   `produce` int DEFAULT '0',

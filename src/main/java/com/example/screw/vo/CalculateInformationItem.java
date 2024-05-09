@@ -16,16 +16,16 @@ public class CalculateInformationItem {
 	
 	private int weight;    // 重量 
 	
-	private List<RawObj> raw;    // 原料
+	private List<ProduceObj> raw;    // 原料
 	
-	private List<ProcessObj> process;  // 製程
+	private List<ProduceObj> process;  // 製程
 
 	public CalculateInformationItem() {
 		super();
 	}
 
 	public CalculateInformationItem(String orderNo, String name, double carbonEmission, int aim, int produce, int weight,
-			List<RawObj> raw, List<ProcessObj> process) {
+			List<ProduceObj> raw, List<ProduceObj> process) {
 		super();
 		this.orderNo = orderNo;
 		this.name = name;
@@ -85,19 +85,19 @@ public class CalculateInformationItem {
 		this.weight = weight;
 	}
 
-	public List<RawObj> getRaw() {
+	public List<ProduceObj> getRaw() {
 		return raw;
 	}
 
-	public void setRaw(List<RawObj> raw) {
+	public void setRaw(List<ProduceObj> raw) {
 		this.raw = raw;
 	}
 
-	public List<ProcessObj> getProcess() {
+	public List<ProduceObj> getProcess() {
 		return process;
 	}
 
-	public void setProcess(List<ProcessObj> process) {
+	public void setProcess(List<ProduceObj> process) {
 		this.process = process;
 	}
 	

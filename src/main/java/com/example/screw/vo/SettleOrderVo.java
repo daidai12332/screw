@@ -3,9 +3,9 @@ package com.example.screw.vo;
 // 用來對應 settle dao 的回傳結果
 public class SettleOrderVo {
 	
-	private String orderNo;
+	private String orderNumber;
 	
-	private double currentSum;      // 電流量加總
+	private double kWhSum;      // 電流量加總
 	
 	private long produceTodaySum;    // pass加總
 
@@ -13,27 +13,27 @@ public class SettleOrderVo {
 		super();
 	}
 
-	public SettleOrderVo(String orderNo, double currentSum, long produceTodaySum) {
+	public SettleOrderVo(String orderNumber, double kWhSum, long produceTodaySum) {
 		super();
-		this.orderNo = orderNo;
-		this.currentSum = currentSum;
+		this.orderNumber = orderNumber;
+		this.kWhSum = kWhSum;
 		this.produceTodaySum = produceTodaySum;
 	}
 
 	public String getOrderNo() {
-		return orderNo;
+		return orderNumber;
 	}
 
 	public void setOrderNo(String orderNo) {
-		this.orderNo = orderNo;
+		this.orderNumber = orderNo;
 	}
 
-	public double getCurrentSum() {
-		return currentSum;
+	public double getKWhSum() {
+		return kWhSum;
 	}
 
-	public void setCurrentSum(double currentSum) {
-		this.currentSum = currentSum;
+	public void setKWhSum(double kWhSum) {
+		this.kWhSum = kWhSum;
 	}
 
 	public long getProduceTodaySum() {

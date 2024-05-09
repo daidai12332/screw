@@ -24,7 +24,14 @@ CREATE TABLE IF NOT EXISTS `screw`.`screw_material` (
 CREATE TABLE IF NOT EXISTS `screw`.`equipment` (
   `name` VARCHAR(20) NOT NULL,
   `data_date` DATE NOT NULL,
-  `purchase_date` DATE NULL,
-  `data_avg` MEDIUMTEXT NULL,
+  `data_run_avg` DOUBLE DEFAULT 0,
+  `data_idle_avg` DOUBLE DEFAULT 0,
+  `data_error_avg` DOUBLE DEFAULT 0,
+  `data_pass_avg` DOUBLE DEFAULT 0,
+  `data_current_avg` DOUBLE DEFAULT 0,
+  `run_it` DOUBLE DEFAULT 0,
+  `idle_it` DOUBLE DEFAULT 0,
+  `error_it` DOUBLE DEFAULT 0,
+  `delete` TINYINT DEFAULT '0',
   PRIMARY KEY (`name`, `data_date`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

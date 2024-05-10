@@ -1,6 +1,6 @@
 package com.example.screw.entity;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,14 +37,14 @@ public class ReceiveData {
 	private int ng;
 	
 	@Column(name = "time") 
-	private LocalDate time;
+	private LocalDateTime time;
 
 	public ReceiveData() {
 		super();
 	}
 
 	public ReceiveData(String name, String status, String orderNumber, double current, int pass, int ng,
-			LocalDate time) {
+			LocalDateTime time) {
 		super();
 		this.name = name;
 		this.status = status;
@@ -111,11 +111,11 @@ public class ReceiveData {
 		this.ng = ng;
 	}
 
-	public LocalDate getTime() {
+	public LocalDateTime getTime() {
 		return time;
 	}
 
-	public void setTime(LocalDate time) {
+	public void setTime(LocalDateTime time) {
 		this.time = time;
 	}
 	

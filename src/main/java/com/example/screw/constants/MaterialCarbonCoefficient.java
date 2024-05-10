@@ -2,6 +2,7 @@ package com.example.screw.constants;
 
 public enum MaterialCarbonCoefficient {
 	
+	ELECTRIC("電力", 0.5), //
 	MaterialName("中文名稱", 0.1);
 	
 	private String name;

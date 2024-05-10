@@ -18,7 +18,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	//jpa
+	// jpa
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	//mysql-connector
 	implementation 'mysql:mysql-connector-java:8.0.31'
@@ -26,6 +26,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	// Hot Deployment
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'	
+	// validation
+	developmentOnly 'org.springframework.boot:spring-boot-starter-validation'	
+	
 	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

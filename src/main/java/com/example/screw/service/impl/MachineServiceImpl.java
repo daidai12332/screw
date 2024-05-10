@@ -96,100 +96,60 @@ public class MachineServiceImpl implements MachineService{
 	
 	@Override
 	public EquipmentRes machineDataWeek(String machineName) {
-		List<Equipment> weekList = machineDataDao.machineDataStatusWeek(machineName);
+		
 		
 		return new EquipmentRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), machineDataDao.machineDataStatusWeek(machineName));	
 	}
 
 	@Override
 	public EquipmentRes machineDataMonth(String machineName) {
-		List<Equipment> monthList = machineDataDao.machineDataStatusMonth(machineName);
+		
 		
 		return new EquipmentRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), machineDataDao.machineDataStatusMonth(machineName));
 	}
 
 	@Override
 	public EquipmentRes machineDataYear(String machineName) {
-		List<Equipment> yearList = machineDataDao.machineDataStatusYear(machineName);
 		
 		return new EquipmentRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), machineDataDao.machineDataStatusYear(machineName));
 	}
 	
 	@Override
 	public ElectricityRes electricityPeriod(double voltage) {
-		ElectricityRes electricity = null;
+		
 		LocalDate today = LocalDate.now();
-		double runElectricity = 0;
-		double idleElectricity = 0;
-		double errorElectricity = 0;
+		
 		if(voltage == 0 ) {
 			return new ElectricityRes (RtnCode.VOLTAGE_CANNOT_ZERO.getCode(), RtnCode.VOLTAGE_CANNOT_ZERO.getMessage());
 		}
-		if(today.getMonthValue() == 1 || today.getMonthValue() == 2) {
-			LocalDate period = LocalDate.of(today.getYear(), 1, 1);
-			Equipment machineIT = machineDataDao.machineITAll(period);
-			runElectricity = voltage*machineIT.getRunIT();
-			idleElectricity = voltage*machineIT.getIdleIT();
-			errorElectricity = voltage*machineIT.getErrorIT();
-			electricity.setRunElectricity(runElectricity);
-			electricity.setIdleElectricity(idleElectricity);
-			electricity.setErrorElectricity(errorElectricity);
-			return new ElectricityRes (RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), electricity.getRunElectricity(), electricity.getIdleElectricity(), electricity.getErrorElectricity());
-		}else if(today.getMonthValue() == 3 || today.getMonthValue() == 4) {
-			LocalDate period = LocalDate.of(today.getYear(), 3, 1);
-			Equipment machineIT = machineDataDao.machineITAll(period);
-			runElectricity = voltage*machineIT.getRunIT();
-			idleElectricity = voltage*machineIT.getIdleIT();
-			errorElectricity = voltage*machineIT.getErrorIT();
-			electricity.setRunElectricity(runElectricity);
-			electricity.setIdleElectricity(idleElectricity);
-			electricity.setErrorElectricity(errorElectricity);
-			return new ElectricityRes (RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), electricity.getRunElectricity(), electricity.getIdleElectricity(), electricity.getErrorElectricity());
-		}else if(today.getMonthValue() == 5 || today.getMonthValue() == 6) {
-			LocalDate period = LocalDate.of(today.getYear(), 5, 1);
-			Equipment machineIT = machineDataDao.machineITAll(period);
-			runElectricity = voltage*machineIT.getRunIT();
-			idleElectricity = voltage*machineIT.getIdleIT();
-			errorElectricity = voltage*machineIT.getErrorIT();
-			electricity.setRunElectricity(runElectricity);
-			electricity.setIdleElectricity(idleElectricity);
-			electricity.setErrorElectricity(errorElectricity);
-			return new ElectricityRes (RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), electricity.getRunElectricity(), electricity.getIdleElectricity(), electricity.getErrorElectricity());
-		}else if(today.getMonthValue() == 7 || today.getMonthValue() == 8) {
-			LocalDate period = LocalDate.of(today.getYear(), 7, 1);
-			Equipment machineIT = machineDataDao.machineITAll(period);
-			runElectricity = voltage*machineIT.getRunIT();
-			idleElectricity = voltage*machineIT.getIdleIT();
-			errorElectricity = voltage*machineIT.getErrorIT();
-			electricity.setRunElectricity(runElectricity);
-			electricity.setIdleElectricity(idleElectricity);
-			electricity.setErrorElectricity(errorElectricity);
-			return new ElectricityRes (RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), electricity.getRunElectricity(), electricity.getIdleElectricity(), electricity.getErrorElectricity());
-		}else if(today.getMonthValue() == 9 || today.getMonthValue() == 10) {
-			LocalDate period = LocalDate.of(today.getYear(), 9, 1);
-			Equipment machineIT = machineDataDao.machineITAll(period);
-			runElectricity = voltage*machineIT.getRunIT();
-			idleElectricity = voltage*machineIT.getIdleIT();
-			errorElectricity = voltage*machineIT.getErrorIT();
-			electricity.setRunElectricity(runElectricity);
-			electricity.setIdleElectricity(idleElectricity);
-			electricity.setErrorElectricity(errorElectricity);
-			return new ElectricityRes (RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), electricity.getRunElectricity(), electricity.getIdleElectricity(), electricity.getErrorElectricity());
-		}else if(today.getMonthValue() == 11 || today.getMonthValue() == 12) {
-			LocalDate period = LocalDate.of(today.getYear(), 11, 1);
-			Equipment machineIT = machineDataDao.machineITAll(period);
-			runElectricity = voltage*machineIT.getRunIT();
-			idleElectricity = voltage*machineIT.getIdleIT();
-			errorElectricity = voltage*machineIT.getErrorIT();
-			electricity.setRunElectricity(runElectricity);
-			electricity.setIdleElectricity(idleElectricity);
-			electricity.setErrorElectricity(errorElectricity);
-			return new ElectricityRes (RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), electricity.getRunElectricity(), electricity.getIdleElectricity(), electricity.getErrorElectricity());
-		}
-		return null;
 		
+		if(today.getMonthValue() % 2 == 0) {
+			LocalDate period = LocalDate.of(today.getYear(), today.getMonthValue()-1, 1);
+			ElectricityRes res = caculateElectricity(period, voltage);
+			return res;
+			
+		}else {
+			LocalDate period = LocalDate.of(today.getYear(), today.getMonthValue(), 1);
+			ElectricityRes res = caculateElectricity(period, voltage);
+			return res;
+		}
+		
+
 	}
 
-	
+	private ElectricityRes caculateElectricity(LocalDate period, double voltage) {
+		ElectricityRes electricity = null;
+		Equipment machineIT = machineDataDao.machineITAll(period);
+		double runElectricity = 0;
+		double idleElectricity = 0;
+		double errorElectricity = 0;
+		runElectricity = voltage*machineIT.getRunIT();
+		idleElectricity = voltage*machineIT.getIdleIT();
+		errorElectricity = voltage*machineIT.getErrorIT();
+		electricity.setRunElectricity(runElectricity);
+		electricity.setIdleElectricity(idleElectricity);
+		electricity.setErrorElectricity(errorElectricity);
+		return new ElectricityRes (RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), electricity.getRunElectricity(), electricity.getIdleElectricity(), electricity.getErrorElectricity());
+	}
 	
 }

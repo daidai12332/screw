@@ -37,7 +37,7 @@ public class SocketServer {
 	private ServerSocket server;
 	private BufferedReader in;
 	private int port = 80;
-	private String ip = "26.88.163.193";
+	private String ip = "26.58.3.200";
 	ObjectMapper mapper = new ObjectMapper();
 
 	public SocketServer() {

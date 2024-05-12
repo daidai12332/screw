@@ -1,10 +1,9 @@
 package com.example.screw.service.impl;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import javax.transaction.Transactional;
 
@@ -12,16 +11,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.example.screw.constants.RtnCode;
 import com.example.screw.entity.Equipment;
 import com.example.screw.entity.ReceiveData;
 import com.example.screw.repository.MachineDataDao;
+import com.example.screw.repository.ReceiveDataDao;
 import com.example.screw.service.ifs.MachineService;
+import com.example.screw.vo.BaseRes;
+import com.example.screw.vo.ElectricityPeriod;
 import com.example.screw.vo.ElectricityRes;
 import com.example.screw.vo.EquipmentRes;
+import com.example.screw.vo.MachineNameReq;
+import com.example.screw.vo.MachineNameRes;
+import com.example.screw.vo.ReceiveDataCurrent;
+import com.example.screw.vo.ReceiveDataLong;
+import com.example.screw.vo.ReceiveDataStatus;
 import com.example.screw.vo.StatusAndOrderRes;
+import com.example.screw.vo.VoltageRes;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @EnableScheduling
 @Transactional
@@ -30,22 +41,28 @@ public class MachineServiceImpl implements MachineService{
 	
 	@Autowired
 	private MachineDataDao machineDataDao;
+	
+	@Autowired
+	private ReceiveDataDao receiveDataDao;
 
 	@Override  
 	@Scheduled(cron = "0 55 23 * * ?")
-	public void machineDataDay() {
+	public void machineDataDay(){
+		LocalDateTime currentDate = LocalDateTime.now();
+		LocalDateTime tomorrow = currentDate.plusDays(1);
 		// 
-		List<ReceiveData> machineDay = machineDataDao.machineDataDay();
-		List<ReceiveData> machineStatusRun = machineDataDao.machineDataStatusRun();
-		List<ReceiveData> machineStatusIdle = machineDataDao.machineDataStatusIdle();
-		List<ReceiveData> machineStatusError = machineDataDao.machineDataStatusError();
-		List<ReceiveData> runCurrentAvg = machineDataDao.machineRunCurrentAvg();
-		List<ReceiveData> idleCurrentAvg = machineDataDao.machineIdleCurrentAvg();
-		List<ReceiveData> errorCurrentAvg = machineDataDao.machineErrorCurrentAvg();
+		List<ReceiveDataLong> machineDay = machineDataDao.machineDataDay(tomorrow);
+		List<ReceiveDataStatus> machineStatusRun = machineDataDao.machineDataStatusRun(tomorrow);
+		List<ReceiveDataStatus> machineStatusIdle = machineDataDao.machineDataStatusIdle(tomorrow);
+		List<ReceiveDataStatus> machineStatusError = machineDataDao.machineDataStatusError(tomorrow);
+		List<ReceiveDataCurrent> runCurrentAvg = machineDataDao.machineRunCurrentAvg();
+		List<ReceiveDataCurrent> idleCurrentAvg = machineDataDao.machineIdleCurrentAvg();
+		List<ReceiveDataCurrent> errorCurrentAvg = machineDataDao.machineErrorCurrentAvg();
 		
-		Equipment equ = null;
+		
 		List<Equipment> equList = new ArrayList<>();
-		LocalDate currentDate = LocalDate.now();
+		LocalDate today = LocalDate.now();
+		Equipment equ = new Equipment();
 		// 各狀態集比例
 		double passAvg = 0;
 		double currentAvg = 0;
@@ -58,45 +75,51 @@ public class MachineServiceImpl implements MachineService{
 		int index = 0;
 		double statusSum = 0;
 		
-		for(ReceiveData item : machineDay) {
+		for(ReceiveDataLong item : machineDay) {
 			passAvg = (double)item.getPass()/(double)(item.getPass()+item.getNg());
 			equ.setDataPassAvg(passAvg);
 			currentAvg = item.getCurrent();
 			equ.setDataCurrentAvg(currentAvg);
 			equ.setName(item.getName());
-			equ.setDataDate(currentDate);
-			equ.setDelete(false);
+			equ.setDataDate(today);
+			equ.setDel(false);
 			runIT = runCurrentAvg.get(index).getCurrent()*24/1000;
 			equ.setRunIT(runIT);
 			idleIT = idleCurrentAvg.get(index).getCurrent()*24/1000;
 			equ.setIdleIT(idleIT);
 			errorIT = errorCurrentAvg.get(index).getCurrent()*24/1000;
 			equ.setErrorIT(errorIT);
-			statusSum = Double.parseDouble(machineStatusIdle.get(index).getStatus())+Double.parseDouble(machineStatusRun.get(index).getStatus())+Double.parseDouble(machineStatusError.get(index).getStatus()); 
-			runAvg = Double.parseDouble(machineStatusRun.get(index).getStatus())/statusSum;
+			statusSum = (double)machineStatusIdle.get(index).getStatus()+(double)machineStatusRun.get(index).getStatus()+(double)machineStatusError.get(index).getStatus(); 
+			runAvg = (double)machineStatusRun.get(index).getStatus()/statusSum;
 			equ.setDataRunAvg(runAvg);
-			idleAvg = Double.parseDouble(machineStatusIdle.get(index).getStatus())/statusSum;
+			idleAvg = (double)machineStatusIdle.get(index).getStatus()/statusSum;
 			equ.setDataIdleAvg(idleAvg);
-			errorAvg = Double.parseDouble(machineStatusError.get(index).getStatus())/statusSum;
+			errorAvg = (double)machineStatusError.get(index).getStatus()/statusSum;
 			equ.setDataErrorAvg(errorAvg);
 			index++;
-			equList.add(equ);
+			machineDataDao.save(equ);
+//			equList.add(equ);
+			
+				
 		}
-		
-		machineDataDao.saveAll(equList);
-		
+//		System.out.println(equList.get(index).getName());
+//		System.out.println(equList.size());
+//		machineDataDao.saveAll(equList);
 		return;
 	}
 
 	@Override
 	public StatusAndOrderRes findmachineDataNow() {
 		// 取所有機台最新的資料
-		return new StatusAndOrderRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), machineDataDao.machineDataNow());
+		return new StatusAndOrderRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), receiveDataDao.machineDataNow());
 	}
 	
 	@Override
 	public EquipmentRes machineDataWeek(String machineName) {
 		
+		if(!StringUtils.hasText(machineName)) {
+			return new EquipmentRes(RtnCode.MACHINE_NAME_NOT_FOUND.getCode(), RtnCode.MACHINE_NAME_NOT_FOUND.getMessage());
+		}
 		
 		return new EquipmentRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), machineDataDao.machineDataStatusWeek(machineName));	
 	}
@@ -104,6 +127,9 @@ public class MachineServiceImpl implements MachineService{
 	@Override
 	public EquipmentRes machineDataMonth(String machineName) {
 		
+		if(!StringUtils.hasText(machineName)) {
+			return new EquipmentRes(RtnCode.MACHINE_NAME_NOT_FOUND.getCode(), RtnCode.MACHINE_NAME_NOT_FOUND.getMessage());
+		}
 		
 		return new EquipmentRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), machineDataDao.machineDataStatusMonth(machineName));
 	}
@@ -111,7 +137,24 @@ public class MachineServiceImpl implements MachineService{
 	@Override
 	public EquipmentRes machineDataYear(String machineName) {
 		
+		if(!StringUtils.hasText(machineName)) {
+			return new EquipmentRes(RtnCode.MACHINE_NAME_NOT_FOUND.getCode(), RtnCode.MACHINE_NAME_NOT_FOUND.getMessage());
+		}
+		
 		return new EquipmentRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), machineDataDao.machineDataStatusYear(machineName));
+	}
+	
+	@Override
+	public VoltageRes getVoltage() {
+		
+		return new VoltageRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), machineDataDao.machineVoltage());
+	}
+	
+	@Override
+	public BaseRes updateVoltage(double voltage) {
+		
+		machineDataDao.updateVoltage(voltage);
+		return new BaseRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage());
 	}
 	
 	@Override
@@ -120,7 +163,7 @@ public class MachineServiceImpl implements MachineService{
 		LocalDate today = LocalDate.now();
 		
 		if(voltage == 0 ) {
-			return new ElectricityRes (RtnCode.VOLTAGE_CANNOT_ZERO.getCode(), RtnCode.VOLTAGE_CANNOT_ZERO.getMessage());
+			return new ElectricityRes (RtnCode.VOLTAGE_CANNOT_BE_ZERO.getCode(), RtnCode.VOLTAGE_CANNOT_BE_ZERO.getMessage());
 		}
 		
 		if(today.getMonthValue() % 2 == 0) {
@@ -138,8 +181,8 @@ public class MachineServiceImpl implements MachineService{
 	}
 
 	private ElectricityRes caculateElectricity(LocalDate period, double voltage) {
-		ElectricityRes electricity = null;
-		Equipment machineIT = machineDataDao.machineITAll(period);
+		ElectricityRes electricity = new ElectricityRes();
+		 ElectricityPeriod machineIT = machineDataDao.machineITAll(period);
 		double runElectricity = 0;
 		double idleElectricity = 0;
 		double errorElectricity = 0;
@@ -151,5 +194,43 @@ public class MachineServiceImpl implements MachineService{
 		electricity.setErrorElectricity(errorElectricity);
 		return new ElectricityRes (RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), electricity.getRunElectricity(), electricity.getIdleElectricity(), electricity.getErrorElectricity());
 	}
+
+	@Override
+	public MachineNameRes findMachineName() {
+		
+		return new MachineNameRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), machineDataDao.machineName());
+	}
+
+	@Override
+	public BaseRes deleteMachine(MachineNameReq req) {
+		
+		if(CollectionUtils.isEmpty(req.getMachineNameList())) {
+			return new BaseRes(RtnCode.MACHINE_NAME_CANNOT_BE_NULL.getCode(), RtnCode.MACHINE_NAME_CANNOT_BE_NULL.getMessage());
+		}
+		
+		for(String item: req.getMachineNameList()) {
+			machineDataDao.machineDelete(item);
+		}
+		
+		return new BaseRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage());
+	}
+
+	@Override
+	public BaseRes addMachine(String machineName) {
+		
+		if(!StringUtils.hasText(machineName)) {
+			return new BaseRes(RtnCode.MACHINE_NAME_CANNOT_BE_NULL.getCode(), RtnCode.MACHINE_NAME_CANNOT_BE_NULL.getMessage());
+		}
+
+		Equipment equ = new Equipment();
+		LocalDate today = LocalDate.of(2020, 1, 1);
+		equ.setName(machineName);
+		equ.setDataDate(today);
+		machineDataDao.save(equ);
+		return new BaseRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage());
+	}
+
+	
+
 	
 }

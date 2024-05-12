@@ -42,10 +42,11 @@ public class ReceiveData {
 	public ReceiveData() {
 		super();
 	}
-
-	public ReceiveData(String name, String status, String orderNumber, double current, int pass, int ng,
+	
+	public ReceiveData(int id, String name, String status, String orderNumber, double current, int pass, int ng,
 			LocalDateTime time) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.status = status;
 		this.orderNumber = orderNumber;
@@ -53,6 +54,15 @@ public class ReceiveData {
 		this.pass = pass;
 		this.ng = ng;
 		this.time = time;
+	}
+	
+	
+
+	public ReceiveData(String name, String status, String orderNumber) {
+		super();
+		this.name = name;
+		this.status = status;
+		this.orderNumber = orderNumber;
 	}
 
 	public int getId() {

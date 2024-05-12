@@ -5,10 +5,12 @@ public enum RtnCode {
 
 	ORDER_NO_NOT_EXISTS(400, "Not exists order no !!"), //
 	ORDER_NO_DUPLICATED(400, "Duplicated order no !!"), //
-	VOLTAGE_CANNOT_ZERO(400, "Voltage_Cannot_Zero"),//
+	VOLTAGE_CANNOT_BE_ZERO(400, "Voltage can not be zero"),//
+	MACHINE_NAME_CANNOT_BE_NULL(400, "Machine name can not be null"),
 	ORDER_NUMBER_NOT_EXISTS(400, "Not exists order numner !!"), //
 	ORDER_NUMBER_DUPLICATED(400, "Duplicated order number !!"), //
 	JSON_ERROR(400, "JSON error!!"), //
+	MACHINE_NAME_NOT_FOUND(404, "Machine name not found"),//
 	SUCCESS_AND_SAVE(200, "Success and save!!"), //
 	SUCCESS(200, "Success!!"); //
 

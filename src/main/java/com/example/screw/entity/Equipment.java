@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @IdClass(value = EquipmentId.class)
@@ -14,6 +16,7 @@ import javax.persistence.Table;
 public class Equipment {
 
 	@Id
+	@NotBlank(message = "設備名稱不能為空")
 	@Column(name = "name")
 	private String name;              // 設備編號 或 電壓
 	
@@ -21,6 +24,7 @@ public class Equipment {
 	@Column(name = "data_date")
 	private LocalDate dataDate;       // 資料統計日期
 
+	@NotNull(message = "電壓不能為空")
 	@Column(name = "data_run_avg")
 	private double dataRunAvg;           // 狀態run比例平均
 	
@@ -45,15 +49,15 @@ public class Equipment {
 	@Column(name = "error_it")		//狀態error的一天總瓦數
 	private double errorIT;
 	
-	@Column(name = "delete")		//設備是否被刪除
-	private boolean delete;
+	@Column(name = "del")		//設備是否被刪除
+	private boolean del;
 	
 	public Equipment() {
 		super();
 	}
 
 	public Equipment(String name, LocalDate dataDate, double dataRunAvg, double dataIdleAvg, double dataErrorAvg,
-			double dataPassAvg, double dataCurrentAvg, double runIT, double idleIT, double errorIT, boolean delete) {
+			double dataPassAvg, double dataCurrentAvg, double runIT, double idleIT, double errorIT, boolean del) {
 		super();
 		this.name = name;
 		this.dataDate = dataDate;
@@ -65,7 +69,26 @@ public class Equipment {
 		this.runIT = runIT;
 		this.idleIT = idleIT;
 		this.errorIT = errorIT;
-		this.delete = delete;
+		this.del = del;
+	}
+
+	public Equipment(String name, LocalDate dataDate) {
+		super();
+		this.name = name;
+		this.dataDate = dataDate;
+	}
+	
+
+	public Equipment(@NotNull(message = "電壓不能為空") double dataRunAvg) {
+		super();
+		this.dataRunAvg = dataRunAvg;
+	}
+
+	public Equipment(String name, LocalDate dataDate, boolean del) {
+		super();
+		this.name = name;
+		this.dataDate = dataDate;
+		this.del = del;
 	}
 
 	public String getName() {
@@ -148,12 +171,12 @@ public class Equipment {
 		this.errorIT = errorIT;
 	}
 
-	public boolean isDelete() {
-		return delete;
+	public boolean isDel() {
+		return del;
 	}
 
-	public void setDelete(boolean delete) {
-		this.delete = delete;
+	public void setDel(boolean del) {
+		this.del = del;
 	}
 	
 }

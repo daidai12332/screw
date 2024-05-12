@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `screw`.`equipment` (
   `run_it` DOUBLE DEFAULT 0,
   `idle_it` DOUBLE DEFAULT 0,
   `error_it` DOUBLE DEFAULT 0,
-  `delete` TINYINT DEFAULT '0',
+  `del` TINYINT DEFAULT '0',
   PRIMARY KEY (`name`, `data_date`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 

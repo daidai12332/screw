@@ -75,4 +75,6 @@ public interface MachineDataDao extends JpaRepository<Equipment, EquipmentId>{
 	@Query(value = "SELECT name FROM screw.equipment  where `delete` = '0' GROUP BY name;", nativeQuery = true)
 	public List<Equipment> machineDelete();
 	
+	//
+	
 }

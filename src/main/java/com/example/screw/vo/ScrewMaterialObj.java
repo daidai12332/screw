@@ -2,36 +2,30 @@ package com.example.screw.vo;
 
 import java.util.List;
 
-public class CalculateInformationItem {
-		
-	private String orderNumber;   // 單號
-	
-	private String name;   // 名稱
+public class ScrewMaterialObj {
 
-	private double carbonEmission;  // 計算出的碳排結果
-	
-	private int aim;       // 目標量
-	
-	private int produce;   // 產量
-	
-	private int weight;    // 重量 
-	
-	private List<ProduceObj> raw;    // 原料
-	
-	private List<ProduceObj> process;  // 製程
+	private String orderNumber; // 單號作為 pk，假設一張單號為一種螺絲
 
-	public CalculateInformationItem() {
+	private String name; // 使用者自行取的名稱
+
+	private int aim; // 訂購的螺絲總量
+
+	private int weight; // 單顆螺絲的重量(g)
+
+	private List<ProduceObj> raw; // List<ProduceObj> 轉成 string = [{原料名稱 + 用量 + 碳排放係數},{}]
+
+	private List<ProduceObj> process; // List<ProduceObj> 轉成 string = [{使用物/排放物 + 使用量/排放量 + 碳排放係數},{}]
+	
+	public ScrewMaterialObj() {
 		super();
 	}
 
-	public CalculateInformationItem(String orderNumber, String name, double carbonEmission, int aim, int produce, int weight,
-			List<ProduceObj> raw, List<ProduceObj> process) {
+	public ScrewMaterialObj(String orderNumber, String name, int aim, int produce, int weight, List<ProduceObj> raw,
+			List<ProduceObj> process) {
 		super();
 		this.orderNumber = orderNumber;
 		this.name = name;
-		this.carbonEmission = carbonEmission;
 		this.aim = aim;
-		this.produce = produce;
 		this.weight = weight;
 		this.raw = raw;
 		this.process = process;
@@ -53,28 +47,12 @@ public class CalculateInformationItem {
 		this.name = name;
 	}
 
-	public double getCarbonEmission() {
-		return carbonEmission;
-	}
-
-	public void setCarbonEmission(double carbonEmission) {
-		this.carbonEmission = carbonEmission;
-	}
-
 	public int getAim() {
 		return aim;
 	}
 
 	public void setAim(int aim) {
 		this.aim = aim;
-	}
-
-	public int getProduce() {
-		return produce;
-	}
-
-	public void setProduce(int produce) {
-		this.produce = produce;
 	}
 
 	public int getWeight() {
@@ -100,5 +78,4 @@ public class CalculateInformationItem {
 	public void setProcess(List<ProduceObj> process) {
 		this.process = process;
 	}
-	
 }

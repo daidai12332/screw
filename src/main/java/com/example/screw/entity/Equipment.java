@@ -70,6 +70,7 @@ public class Equipment {
 		this.idleIT = idleIT;
 		this.errorIT = errorIT;
 		this.del = del;
+
 	}
 
 	public Equipment(String name, LocalDate dataDate) {

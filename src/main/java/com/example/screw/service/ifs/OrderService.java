@@ -6,14 +6,21 @@ import com.example.screw.vo.BaseRes;
 import com.example.screw.vo.CalculateInformationRes;
 import com.example.screw.vo.PowerUpdateRes;
 import com.example.screw.vo.ProduceObj;
+import com.example.screw.vo.SearchOrderRes;
 
-public interface ScrewMaterialService {
+public interface OrderService {
 
 	// 新增單號
-	public BaseRes addOrder(String orderNumber, String name, int aim, int weight, List<ProduceObj> raw, List<ProduceObj> process);
+	public BaseRes createOrder(String orderNumber, String name, int aim, int weight, List<ProduceObj> raw, List<ProduceObj> process);
 
 	// 編輯單號
 	public BaseRes editOrder(String orderNumber, String name, int aim, int weight, List<ProduceObj> raw, List<ProduceObj> process);
+
+	// 刪除單號
+	public BaseRes deleteOrder(String orderNumber);
+	
+	// 搜尋單號
+	public SearchOrderRes searchOrder(String orderNumber, String name);
 
 	// 每日結算各單號累積耗電量和生產量(Schedule)
 	public void settleOrderPower();

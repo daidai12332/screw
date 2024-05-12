@@ -88,4 +88,10 @@ public interface MachineDataDao extends JpaRepository<Equipment, EquipmentId>{
 	@Query(value = "UPDATE screw.equipment SET `del` = '1' WHERE `name` = ?1", nativeQuery = true)
 	public void machineDelete(String machineName);
 	
+	
+	// §R°£³]³Æ
+	@Query(value = "SELECT name FROM screw.equipment  where `del` = '0' GROUP BY name;", nativeQuery = true)
+	public List<Equipment> machineDelete();
+
+	
 }

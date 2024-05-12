@@ -6,9 +6,9 @@ public class PowerUpdateRes {
 	
 	private String message;
 
-	private double powerUsageEstimate;   // 預估的用電量
+	private double powerUsageEstimate;   // 預估生產完所有螺絲的用電量
 	
-	private double powerCarbon;          // 碳排放
+	private double powerCarbon;          // 電的碳排放
 
 	public PowerUpdateRes() {
 		super();

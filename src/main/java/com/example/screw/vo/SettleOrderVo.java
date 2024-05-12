@@ -20,12 +20,12 @@ public class SettleOrderVo {
 		this.produceTodaySum = produceTodaySum;
 	}
 
-	public String getOrderNo() {
+	public String getOrderNumber() {
 		return orderNumber;
 	}
 
-	public void setOrderNo(String orderNo) {
-		this.orderNumber = orderNo;
+	public void setOrderNumber(String orderNumber) {
+		this.orderNumber = orderNumber;
 	}
 
 	public double getKWhSum() {

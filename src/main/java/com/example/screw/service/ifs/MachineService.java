@@ -1,10 +1,12 @@
 package com.example.screw.service.ifs;
 
+
 import java.time.LocalDate;
 import java.util.List;
 
 import com.example.screw.entity.ReceiveData;
 import com.example.screw.vo.BaseRes;
+
 import com.example.screw.vo.ElectricityRes;
 import com.example.screw.vo.EquipmentRes;
 import com.example.screw.vo.MachineNameReq;

@@ -1,7 +1,5 @@
 package com.example.screw.service.ifs;
 
-import java.time.LocalDate;
-
 import com.example.screw.vo.ElectricityRes;
 import com.example.screw.vo.EquipmentRes;
 import com.example.screw.vo.StatusAndOrderRes;

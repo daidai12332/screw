@@ -1,6 +1,6 @@
 SET sql_safe_updates=0;
 
-CREATE TABLE IF NOT EXISTS `receive_data` (
+CREATE TABLE IF NOT EXISTS `screw`.`receive_data` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(10) NOT NULL,
   `status` varchar(10) DEFAULT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `receive_data` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE IF NOT EXISTS `screw`.`screw_material` (
+CREATE TABLE IF NOT EXISTS `screw`.`order` (
   `order_number` varchar(20) NOT NULL DEFAULT 0,
   `name` VARCHAR(100) NULL,
   `aim` INT NOT NULL DEFAULT 0,
@@ -39,5 +39,11 @@ CREATE TABLE IF NOT EXISTS `screw`.`equipment` (
   `delete` TINYINT DEFAULT '0',
   PRIMARY KEY (`name`, `data_date`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS `account` (
+  `account` varchar(20) NOT NULL,
+  `pwd` varchar(200) NOT NULL,
+  PRIMARY KEY (`account`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 

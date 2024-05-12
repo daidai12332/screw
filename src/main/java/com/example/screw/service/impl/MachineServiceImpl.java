@@ -65,7 +65,7 @@ public class MachineServiceImpl implements MachineService{
 			equ.setDataCurrentAvg(currentAvg);
 			equ.setName(item.getName());
 			equ.setDataDate(currentDate);
-			equ.setDelete(false);
+			equ.setDel(false);
 			runIT = runCurrentAvg.get(index).getCurrent()*24/1000;
 			equ.setRunIT(runIT);
 			idleIT = idleCurrentAvg.get(index).getCurrent()*24/1000;

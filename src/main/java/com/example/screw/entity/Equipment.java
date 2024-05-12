@@ -45,15 +45,15 @@ public class Equipment {
 	@Column(name = "error_it")		//狀態error的一天總瓦數
 	private double errorIT;
 	
-	@Column(name = "delete")		//設備是否被刪除
-	private boolean delete;
+	@Column(name = "del")		//設備是否被刪除
+	private boolean del;
 	
 	public Equipment() {
 		super();
 	}
 
 	public Equipment(String name, LocalDate dataDate, double dataRunAvg, double dataIdleAvg, double dataErrorAvg,
-			double dataPassAvg, double dataCurrentAvg, double runIT, double idleIT, double errorIT, boolean delete) {
+			double dataPassAvg, double dataCurrentAvg, double runIT, double idleIT, double errorIT, boolean del) {
 		super();
 		this.name = name;
 		this.dataDate = dataDate;
@@ -65,7 +65,7 @@ public class Equipment {
 		this.runIT = runIT;
 		this.idleIT = idleIT;
 		this.errorIT = errorIT;
-		this.delete = delete;
+		this.del = del;
 	}
 
 	public String getName() {
@@ -148,12 +148,12 @@ public class Equipment {
 		this.errorIT = errorIT;
 	}
 
-	public boolean isDelete() {
-		return delete;
+	public boolean isDel() {
+		return del;
 	}
 
-	public void setDelete(boolean delete) {
-		this.delete = delete;
+	public void setDel(boolean del) {
+		this.del = del;
 	}
 	
 }

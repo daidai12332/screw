@@ -68,11 +68,11 @@ public interface MachineDataDao extends JpaRepository<Equipment, EquipmentId>{
 	public Equipment machineITAll(LocalDate period);
 	
 	// 取得目前有的機台名稱(除了delete是true的)
-	@Query(value = "SELECT name FROM screw.equipment  where `delete` = '0' GROUP BY name;", nativeQuery = true)
+	@Query(value = "SELECT name FROM screw.equipment  where `del` = '0' GROUP BY name;", nativeQuery = true)
 	public List<Equipment> machineName();
 	
 	// 刪除設備
-	@Query(value = "SELECT name FROM screw.equipment  where `delete` = '0' GROUP BY name;", nativeQuery = true)
+	@Query(value = "SELECT name FROM screw.equipment  where `del` = '0' GROUP BY name;", nativeQuery = true)
 	public List<Equipment> machineDelete();
 	
 }

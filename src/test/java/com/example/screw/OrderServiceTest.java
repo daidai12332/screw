@@ -16,6 +16,7 @@ import com.example.screw.constants.MaterialCarbonCoefficient;
 import com.example.screw.entity.ReceiveData;
 import com.example.screw.entity.Order;
 import com.example.screw.repository.OrderDao;
+import com.example.screw.service.ifs.MemberService;
 import com.example.screw.service.ifs.OrderService;
 import com.example.screw.vo.BaseRes;
 import com.example.screw.vo.CalculateInformationRes;
@@ -30,12 +31,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class OrderServiceTest {
 
 	@Autowired
+	private MemberService memberService;
+	
+	@Autowired
 	private OrderService screwMaterialService;
 
 	@Autowired
 	private OrderDao screwMaterialDao;
 	
 	private ObjectMapper mapper = new ObjectMapper();
+	
+	@Test
+	void createTest() throws JsonProcessingException {
+		BaseRes res = memberService.signUp("test001", "a123321a");
+		System.out.println(mapper.writeValueAsString(res));
+	}
 	
 	@Test
 	void daoTest() throws JsonProcessingException {

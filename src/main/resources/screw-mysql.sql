@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `screw`.`order` (
   `weight` INT NOT NULL DEFAULT 0,
   `raw` MEDIUMTEXT NOT NULL,
   `process` MEDIUMTEXT,
-  `delete` TINYINT DEFAULT '0',
+  `del` TINYINT DEFAULT '0',
   PRIMARY KEY (`order_number`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 

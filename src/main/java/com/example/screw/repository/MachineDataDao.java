@@ -59,7 +59,7 @@ public interface MachineDataDao extends JpaRepository<Equipment, EquipmentId>{
 	public List<Equipment> machineDataStatusWeek(String machineName);
 	
 	// 取得特定機台一個月的平均各項資料
-	@Query(value = "select * from screw.equipment where name = ?1 and `del` = '0' and data_date <= CURRENT_DATE and data_date >= CURRENT_DATE - INTERVAL 30  DAY", nativeQuery = true)
+	@Query(value = "select * from screw.equipment where name = ?1 and `del` = '0' and data_date <= CURRENT_DATE and data_date >= CURRENT_DATE - INTERVAL 1 MONTH", nativeQuery = true)
 	public List<Equipment> machineDataStatusMonth(String machineName);
 	
 	// 取得特定機台一年的平均各項資料

@@ -2,16 +2,19 @@ package com.example.screw.vo;
 
 import java.util.List;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import com.example.screw.entity.Order;
 
 public class OrderReq extends Order{
 
-	@NotBlank(message = "原料消耗不能為空")
+	@Valid
+	@NotNull(message = "原料消耗不能為空")
 	private List<ProduceObj> rawObj;
 
-	@NotBlank(message = "製程消耗不能為空")
+	@Valid
+	@NotNull(message = "製程消耗不能為空")
 	private List<ProduceObj> produceObj;
 
 	public OrderReq() {

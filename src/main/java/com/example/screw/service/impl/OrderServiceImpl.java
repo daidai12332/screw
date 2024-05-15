@@ -153,7 +153,7 @@ public class OrderServiceImpl implements OrderService {
 						});
 				for (ProduceObj obj : processObjList) {
 					if (obj.getName().equals("電力")) {
-						obj.setAmount(obj.getAmount() + sumToday.get(i).getKWhSum());
+						obj.setAmount(Math.round((obj.getAmount() + sumToday.get(i).getKWhSum())*1000)/1000);
 						break;
 					}
 				}
@@ -176,8 +176,8 @@ public class OrderServiceImpl implements OrderService {
 		Map<String, List<Double>> oldDataMap = new LinkedHashMap<>();
 		// 用來裝取要回傳的計算結果 ( 以單號作為索引值，內容是要回傳的資料 )
 		Map<String, CalculateInformationItem> calculateInformationItemMap = new LinkedHashMap<>();
-		// 判斷所有單號是否皆已生產出目標量，若是，無須進入資料庫存取
-		boolean allDone = true;
+		// 用來記錄電力的index
+		Map<String, Integer> indexForPower = new LinkedHashMap<>();
 		// 對每一筆單號做處理：(1) 將 String 轉回 Obj (2) 計算碳排放 (3) 將內容值放到 calculateInformationItemMap 中
 		for (Order data : dataAll) {
 			try {
@@ -197,16 +197,13 @@ public class OrderServiceImpl implements OrderService {
 				for (ProduceObj processObj : processList) {
 					// 如果是電力先不進行計算，紀錄累積電度、累積生產量、目標量、重量
 					if (processObj.getName().equals("電力")) {
+						indexForPower.put(data.getOrderNumber(), processList.indexOf(processObj));
 						oldDataMap.put(data.getOrderNumber(), new ArrayList<Double>(Arrays.asList(processObj.getAmount(),
 								(double) data.getProduce(), (double) data.getAim(), (double) data.getWeight())));
 						continue;
 					}
 					// process 的碳排 = 使用量*碳排放係數/商品重量(kg)
-					process += (double) processObj.getAmount() * processObj.getCarbonCoefficient() / (data.getAim() * data.getWeight() / 1000);
-				}
-				// 只要有任一筆訂單未達到目標量，就需要進入資料庫
-				if(!allDone || data.getAim() > data.getProduce()) {
-					allDone = false;
+					process += (double) Math.round((processObj.getAmount() * processObj.getCarbonCoefficient() / (data.getAim() * data.getWeight() / 1000))*10000)/10000;
 				}
 				// 將目前算出來的除了電力以外的碳排總值，放入 map 中 (CalculateItem=單號+名稱+計算出的碳排結果+目標量+產量+重量+原料+製程)
 				calculateInformationItemMap.put(data.getOrderNumber(),    // 以單號作為 key 值
@@ -215,15 +212,10 @@ public class OrderServiceImpl implements OrderService {
 				return new CalculateInformationRes(RtnCode.JSON_ERROR.getCode(), RtnCode.JSON_ERROR.getMessage(), null);
 			}
 		}
-		// 用來裝結果
-		List<SettleOrderVo> sumRealTime = null;
-		// 如果沒有全部達到目標量，就進入資料庫
-		if(!allDone) {
-			// 從 receive_data 將 time >= 今天 00:00 且 time <= now 的資料依單號分組加總電度和產量後依單號排序後回傳
-			sumRealTime = orderDao.
-					sumOrderKWhAndPass(LocalDate.now().atTime(0, 0, 0), LocalDateTime.now(), "%%");
-		}
-		// 如果沒進入資料庫or沒開工：直接用原始電量計算，再與其他碳係數相加即可，並且用 RtnCode 告知資料可以存在 Cache
+		// 從 receive_data 將 time >= 今天 00:00 且 time <= now 的資料依單號分組加總電度和產量後依單號排序後回傳
+		List<SettleOrderVo> sumRealTime = orderDao.
+				sumOrderKWhAndPass(LocalDate.now().atTime(0, 0, 0), LocalDateTime.now(), "%%");
+		// 如果沒開工：直接用原始電量計算，再與其他碳係數相加即可，並且用 RtnCode 告知資料可以存在 Cache
 		if (CollectionUtils.isEmpty(sumRealTime)) {
 			for (Entry<String, List<Double>> oldDataEntry : oldDataMap.entrySet()) {
 				// 若累積生產量為 0 則直接離開
@@ -232,22 +224,24 @@ public class OrderServiceImpl implements OrderService {
 				}
 				// 沒有新資料的電力碳排 = (累積電度/累積產量*目標產量)*碳排係數/總重量(kg)
 				// oldDataEntry 以單號作為索引值，List 中 : 0 放累積電度，1 放累積生產量，2 放目標量，3 放重量
-				double powerCarbon = (oldDataEntry.getValue().get(0) / oldDataEntry.getValue().get(1) * oldDataEntry.getValue().get(2))
+				double powerCarbon = Math.round(((oldDataEntry.getValue().get(0) / oldDataEntry.getValue().get(1) * oldDataEntry.getValue().get(2))
 						* MaterialCarbonCoefficient.getCarbonCoefficientByName("電力").getCarbonCoefficient()
-						/ (oldDataEntry.getValue().get(2) * oldDataEntry.getValue().get(3) / 1000);
+						/ (oldDataEntry.getValue().get(2) * oldDataEntry.getValue().get(3) / 1000))*10000)/10000;
 				// 將該筆單號的所有資料取出來
 				CalculateInformationItem temp = calculateInformationItemMap.get(oldDataEntry.getKey());
+				// 設定產量
+				temp.setProduce((int) Math.round(oldDataEntry.getValue().get(1)));
 				// 將電力的碳排係數計算好後，和未包含電力的碳排資料相加存回去
 				temp.setCarbonEmission(temp.getCarbonEmission() + powerCarbon);
 				// 將該筆單號的所有資料存回去
 				calculateInformationItemMap.put(oldDataEntry.getKey(), temp);
 			}
-			// 將整理完畢的資料輸出成 List<calculateItem>，並使用 RtnCode 分辨需不需要存到 Cache
+			// 將整理完畢的資料輸出成 List<calculateItem>
 			List<CalculateInformationItem> calculateList = new ArrayList<>();
 			for (Entry<String, CalculateInformationItem> eachData : calculateInformationItemMap.entrySet()) {
 				calculateList.add(eachData.getValue());
 			}
-			return new CalculateInformationRes(RtnCode.SUCCESS_AND_SAVE.getCode(), RtnCode.SUCCESS_AND_SAVE.getMessage(),
+			return new CalculateInformationRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(),
 					calculateList);
 		}
 		// 如果有開工：把今天的電度和產量加上去，接著做一樣的計算
@@ -258,17 +252,21 @@ public class OrderServiceImpl implements OrderService {
 			// 如果 sumIndex 還沒超過長度，表示尚有未加入統計的更新資料，且當 sumRealTime 的單號和 eachUpdate 的 key 值相同，表示這筆單號有需要添加的電度
 			if (sumIndex < sumRealTime.size() && sumRealTime.get(sumIndex).getOrderNumber().equals(oldDataEntry.getKey())) {
 				// 計算總電度
-				double powerTotal = sumRealTime.get(sumIndex).getKWhSum() + oldDataEntry.getValue().get(0);
+				double powerTotal = Math.round((sumRealTime.get(sumIndex).getKWhSum() + oldDataEntry.getValue().get(0))*10000)/10000;
 				// 計算總產量
 				double produceTotal = sumRealTime.get(sumIndex).getProduceTodaySum() + oldDataEntry.getValue().get(1);
 				// 電的碳排 = (每顆的電度*目標顆數)*碳排係數/目標總重量
-				double powerCarbon = ( powerTotal / produceTotal * oldDataEntry.getValue().get(2))
+				double powerCarbon = Math.round((( powerTotal / produceTotal * oldDataEntry.getValue().get(2))
 						* MaterialCarbonCoefficient.getCarbonCoefficientByName("電力").getCarbonCoefficient()
-						/ (oldDataEntry.getValue().get(2) * oldDataEntry.getValue().get(3) / 1000);
+						/ (oldDataEntry.getValue().get(2) * oldDataEntry.getValue().get(3) / 1000))*10000)/10000;
 				// 將該筆單號的所有資料取出來
 				CalculateInformationItem temp = calculateInformationItemMap.get(oldDataEntry.getKey());
 				// 將電力的碳排係數計算好後，和未包含電力的碳排資料相加存回去
 				temp.setCarbonEmission(temp.getCarbonEmission() + powerCarbon);
+				// 設定產量
+				temp.setProduce((int)produceTotal);
+				// 拿到電力的資料，設定 amount
+				temp.getProcess().get(indexForPower.get(oldDataEntry.getKey())).setAmount(powerTotal);
 				// 將該筆單號的所有資料存回去
 				calculateInformationItemMap.put(oldDataEntry.getKey(), temp);
 				sumIndex++;
@@ -279,11 +277,13 @@ public class OrderServiceImpl implements OrderService {
 					continue;
 				}
 				// 沒有新資料的電力碳排 = (累積電度/累積產量*目標產量)*碳排係數/總重量(kg)
-				double powerCarbon = ( oldDataEntry.getValue().get(0) / oldDataEntry.getValue().get(1) * oldDataEntry.getValue().get(2))
+				double powerCarbon =  Math.round(((oldDataEntry.getValue().get(0) / oldDataEntry.getValue().get(1) * oldDataEntry.getValue().get(2))
 						* MaterialCarbonCoefficient.getCarbonCoefficientByName("電力").getCarbonCoefficient()
-						/ (oldDataEntry.getValue().get(2) * oldDataEntry.getValue().get(3) / 1000);						
+						/ (oldDataEntry.getValue().get(2) * oldDataEntry.getValue().get(3) / 1000))*10000)/10000;						
 				// 將該筆單號的所有資料取出來
 				CalculateInformationItem temp = calculateInformationItemMap.get(oldDataEntry.getKey());
+				// 設定產量
+				temp.setProduce((int) Math.round(oldDataEntry.getValue().get(1)));
 				// 將電力的碳排係數計算好後，和未包含電力的碳排資料相加存回去
 				temp.setCarbonEmission(temp.getCarbonEmission() + powerCarbon);
 				// 將該筆單號的所有資料存回去
@@ -300,20 +300,20 @@ public class OrderServiceImpl implements OrderService {
 
 	// 更新電力使用量(用於碳排細節呈現): 參數(正在查看的單號, 目標量, 目前產量, 單顆重量, 過去累積用電度) 傳回(最新每顆螺絲的使用電度)
 	// 用於碳細節呈現時所查看的資料並未生產完畢時，需定期回傳最新的預估電度
-	@Override
-	public PowerUpdateRes powerUpdate(String orderNumber, int aim, int produce, int weight, double powerUsage) {
-		// 將這筆單號的今日累積電度統整
-		List<SettleOrderVo> sumRealTime = orderDao
-				.sumOrderKWhAndPass(LocalDate.now().atTime(0, 0, 0), LocalDateTime.now(), orderNumber);
-		// 計算總電度
-		double powerTotal = powerUsage + sumRealTime.get(0).getKWhSum();
-		// 計算總產量
-		double produceTotal = produce + sumRealTime.get(0).getProduceTodaySum();
-		// 電的碳排 = (每顆的電度*目標顆數)*碳排係數/目標總重量
-		double powerCarbon = ( powerTotal / produceTotal * aim)
-				* MaterialCarbonCoefficient.getCarbonCoefficientByName("電力").getCarbonCoefficient()
-				/ (aim * weight / 1000);
-		return new PowerUpdateRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), (powerTotal / produceTotal * aim), powerCarbon);
-	}
+//	@Override
+//	public PowerUpdateRes powerUpdate(String orderNumber, int aim, int produce, int weight, double powerUsage) {
+//		// 將這筆單號的今日累積電度統整
+//		List<SettleOrderVo> sumRealTime = orderDao
+//				.sumOrderKWhAndPass(LocalDate.now().atTime(0, 0, 0), LocalDateTime.now(), orderNumber);
+//		// 計算總電度
+//		double powerTotal = powerUsage + sumRealTime.get(0).getKWhSum();
+//		// 計算總產量
+//		double produceTotal = produce + sumRealTime.get(0).getProduceTodaySum();
+//		// 電的碳排 = (每顆的電度*目標顆數)*碳排係數/目標總重量
+//		double powerCarbon = ( powerTotal / produceTotal * aim)
+//				* MaterialCarbonCoefficient.getCarbonCoefficientByName("電力").getCarbonCoefficient()
+//				/ (aim * weight / 1000);
+//		return new PowerUpdateRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), (powerTotal / produceTotal * aim), powerCarbon);
+//	}
 	
 }

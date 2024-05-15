@@ -34,7 +34,7 @@ public enum MaterialCarbonCoefficient {
 	// 功能：根據原料，取得對應的碳係數值
 	public static MaterialCarbonCoefficient getCarbonCoefficientByName(String name){
 		for(MaterialCarbonCoefficient material : MaterialCarbonCoefficient.values()) {
-			if(material.name == name) {
+			if(material.name.equals(name)) {
 				return material;
 			}
 		}

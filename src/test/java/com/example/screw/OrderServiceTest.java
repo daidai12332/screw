@@ -143,10 +143,10 @@ public class OrderServiceTest {
 	}
 	
 	// 更新電力使用量(用於碳排細節呈現): 參數(正在查看的單號, 目標量, 目前產量, 單顆重量, 過去累積用電度) 傳回(最新每顆螺絲的使用電度)
-	@Test
-	void powerUpdateTest() throws JsonProcessingException {
-		/*********** 測試成功 ***********/
-		PowerUpdateRes res = screwMaterialService.powerUpdate("1", 10000, 0, 600, 0.80);
-		System.out.println(mapper.writeValueAsString(res));
-	}
+//	@Test
+//	void powerUpdateTest() throws JsonProcessingException {
+//		/*********** 測試成功 ***********/
+//		PowerUpdateRes res = screwMaterialService.powerUpdate("1", 10000, 0, 600, 0.80);
+//		System.out.println(mapper.writeValueAsString(res));
+//	}
 }

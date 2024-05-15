@@ -29,6 +29,30 @@ public class OrderServiceController {
 	@Autowired
 	private OrderService orderService;
 
+	// 新增單號
+	@PostMapping(value = "order/create")
+	public BaseRes createOrder(@Valid @RequestBody OrderReq orderReq) {
+		return orderService.createOrder(orderReq.getOrderNumber(), orderReq.getName(), orderReq.getAim(), orderReq.getWeight(), orderReq.getRawObj(), orderReq.getProduceObj());
+	}
+	
+	// 編輯單號
+	@PostMapping(value = "order/edit")
+	public BaseRes editOrder(@Valid @RequestBody OrderReq orderReq) {
+		return orderService.editOrder(orderReq.getOrderNumber(), orderReq.getName(), orderReq.getAim(), orderReq.getWeight(), orderReq.getRawObj(), orderReq.getProduceObj());
+	}
+
+	// 刪除單號
+	@PostMapping(value = "order/delete")
+	public BaseRes deleteOrder(@RequestParam @NotEmpty(message = "單號不可為空") String orderNumber) {
+		return orderService.deleteOrder(orderNumber);
+	}
+	
+	// 搜尋單號
+	@PostMapping(value = "order/search")
+	public SearchOrderRes searchOrder(@RequestBody SearchReq searchReq) {
+		return orderService.searchOrder(searchReq.getOrderNumber(), searchReq.getName());
+	}
+	
 	/**** 以下為前台功能 ****/
 	
 	// 計算碳排(用於碳排呈現): 參數(null) 傳回(每筆單號的資料庫資料、碳排值)

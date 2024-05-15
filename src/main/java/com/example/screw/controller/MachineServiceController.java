@@ -60,4 +60,20 @@ public class MachineServiceController {
 		return machineService.electricityPeriod(voltage);
 	}
 	
+	@PostMapping(value = "screw/findMachineName")
+	public MachineNameRes findMachineName() {
+		return machineService.findMachineName();
+	}
+	
+	@PostMapping(value = "screw/deleteMachine")
+	public BaseRes deleteMachine(@RequestBody MachineNameReq req) {
+		return machineService.deleteMachine(req);
+	}
+	
+	@PostMapping(value = "screw/addMachine")
+	public BaseRes addMachine(@RequestParam(value = "name") String machineName) {
+		return machineService.addMachine(machineName);
+	}
+
+	
 }

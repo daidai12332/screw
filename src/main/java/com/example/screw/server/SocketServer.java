@@ -37,7 +37,7 @@ public class SocketServer {
 	private ServerSocket server;
 	private BufferedReader in;
 	private int port = 80;
-	private String ip = "26.58.3.200";
+	private String ip = "26.88.163.193";
 	ObjectMapper mapper = new ObjectMapper();
 
 	public SocketServer() {
@@ -98,14 +98,6 @@ public class SocketServer {
 											System.out.println("pass: " + item.get("pass"));
 											System.out.println("ng: " + item.get("ng"));
 											System.out.println("******* END ********");
-										}
-										// 將資料輸出到本機
-										String saveDataName = LocalDate.now().toString() + "_receive_data" + ".txt" ;
-										try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(saveDataName, true));) {
-											line = now.toString() + "\n" + line + "\n\n";
-											bos.write(line.getBytes());   // 將 temp 的資料 經由 buffer 寫到 目的檔中
-										} catch (IOException e) {
-											System.out.println(e);
 										}
 									}
 								}

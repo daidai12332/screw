@@ -17,6 +17,7 @@ import com.example.screw.entity.EquipmentId;
 import com.example.screw.entity.ReceiveData;
 import com.example.screw.vo.ElectricityPeriod;
 import com.example.screw.vo.EquipmentName;
+import com.example.screw.vo.MachineVoltage;
 import com.example.screw.vo.ReceiveDataCurrent;
 import com.example.screw.vo.ReceiveDataLong;
 import com.example.screw.vo.ReceiveDataStatus;
@@ -27,7 +28,7 @@ import com.example.screw.vo.ReceiveDataStatus;
 public interface MachineDataDao extends JpaRepository<Equipment, EquipmentId>{
 	
 	// 取所有機台一天的資料(pass總數、ng總數、平均電流)
-	@Query(value = "select new com.example.screw.vo.ReceiveDataLong(name, avg(current) as current, sum(pass) as pass, sum(ng) as ng) from ReceiveData where time < ?1 GROUP BY name")
+	@Query(value = "select new com.example.screw.vo.ReceiveDataLong(name, avg(current) as current, sum(pass) as pass, sum(ng) as ng) from ReceiveData where time < ?1 GROUP BY name order by name")
 	public List<ReceiveDataLong> machineDataDay(LocalDateTime tomorrow);
 	
 	// 取所有機台一天的idle次數
@@ -54,6 +55,10 @@ public interface MachineDataDao extends JpaRepository<Equipment, EquipmentId>{
 	@Query(value = "select new com.example.screw.vo.ReceiveDataCurrent(name, avg(current) as current) from ReceiveData where status = 'error' GROUP BY name")
 	public List<ReceiveDataCurrent> machineErrorCurrentAvg();
 	
+	// 取得所有機台當前電壓
+	@Query(value = "SELECT new com.example.screw.vo.MachineVoltage(name,avg(voltage)as voltage) from Equipment group by name")
+	public List<MachineVoltage> machineVoltage();
+	
 	// 取得特定機台一週的平均各項資料
 	@Query(value = "select * from screw.equipment where name = ?1 and `del` = '0' and data_date <= CURRENT_DATE and data_date >= CURRENT_DATE - INTERVAL 7  DAY", nativeQuery = true)
 	public List<Equipment> machineDataStatusWeek(String machineName);
@@ -66,18 +71,18 @@ public interface MachineDataDao extends JpaRepository<Equipment, EquipmentId>{
 	@Query(value = "select * from screw.equipment where name = ?1 and `del` = '0' and data_date <= CURRENT_DATE and data_date >= CURRENT_DATE - INTERVAL 365  DAY", nativeQuery = true)
 	public List<Equipment> machineDataStatusYear(String machineName);
 	
-	// 取得目前電壓
-	@Query(value = "select data_run_avg from screw.equipment where name = 'voltage'", nativeQuery = true)
-	public double machineVoltage();
+//	// 取得目前電壓
+//	@Query(value = "select data_run_avg from screw.equipment where name = 'voltage'", nativeQuery = true)
+//	public double machineVoltage();
 	
 	//更新電壓
 	@Modifying
-	@Query(value = "UPDATE screw.equipment SET data_run_avg = ?1 WHERE name = 'voltage'", nativeQuery = true)
-	public void updateVoltage(double voltage);
+	@Query(value = "UPDATE screw.equipment SET voltage = ?1 WHERE name = ?2", nativeQuery = true)
+	public void updateVoltage(double voltage, String machineName);
 	
 	// 所有機台一期的總電度
-	@Query(value = "select new com.example.screw.vo.ElectricityPeriod(sum(runIT) as runIT, sum(idleIT) as idleIT, sum(errorIT) as errorIT) from Equipment where del = 'false' and  data_date >= ?1")
-	public ElectricityPeriod machineITAll(LocalDate period);
+	@Query(value = "select new com.example.screw.vo.ElectricityPeriod(name, sum(runIT) as runIT, sum(idleIT) as idleIT, sum(errorIT) as errorIT) from Equipment where del = 'false' and  data_date >= ?1 group by name")
+	public List<ElectricityPeriod> machineITAll(LocalDate period);
 	
 	// 取得目前有的機台名稱(除了delete是true的)
 	@Query(value = "SELECT new com.example.screw.vo.EquipmentName( name) from Equipment where del = 'false' GROUP BY name")
@@ -87,5 +92,9 @@ public interface MachineDataDao extends JpaRepository<Equipment, EquipmentId>{
 	@Modifying
 	@Query(value = "UPDATE screw.equipment SET `del` = '1' WHERE `name` = ?1", nativeQuery = true)
 	public void machineDelete(String machineName);
+	
+	// 取得特定機台類型
+	@Query(value = "select * from screw.equipment where name = ?1 and `del` = '0' LIMIT 1", nativeQuery = true)
+	public Equipment findTypeByName(String machineName);
 	
 }

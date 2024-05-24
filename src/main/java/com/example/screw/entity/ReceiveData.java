@@ -56,8 +56,14 @@ public class ReceiveData {
 		this.ng = ng;
 		this.time = time;
 	}
-	
-	
+
+	public ReceiveData(String name, int pass, double current) {
+		super();
+		this.name = name;
+		this.pass = pass;
+		this.current = current;
+		
+	}
 
 	public ReceiveData(String name, String status, String orderNumber) {
 		super();

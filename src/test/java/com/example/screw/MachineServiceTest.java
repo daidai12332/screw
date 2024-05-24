@@ -12,15 +12,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.screw.entity.Equipment;
+import com.example.screw.entity.EquipmentHour;
 import com.example.screw.entity.ReceiveData;
+import com.example.screw.repository.EquipmentHourDao;
 import com.example.screw.repository.MachineDataDao;
 import com.example.screw.repository.ReceiveDataDao;
 import com.example.screw.service.ifs.MachineService;
 import com.example.screw.vo.ElectricityPeriod;
+import com.example.screw.vo.ElectricityRes;
+import com.example.screw.vo.EquipmentHoursDay;
 import com.example.screw.vo.EquipmentName;
 import com.example.screw.vo.MachineNameReq;
+import com.example.screw.vo.MachineVoltage;
 import com.example.screw.vo.ReceiveDataCurrent;
 import com.example.screw.vo.ReceiveDataLong;
+import com.example.screw.vo.ReceiveDataOrder;
 import com.example.screw.vo.ReceiveDataStatus;
 import com.example.screw.vo.StatusAndOrderRes;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -37,6 +43,9 @@ public class MachineServiceTest {
 	
 	@Autowired
 	private ReceiveDataDao receiveDataDao;
+	
+	@Autowired
+	private EquipmentHourDao equipmentHourDao;
 	
 	private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -69,7 +78,7 @@ public class MachineServiceTest {
 	
 	@Test
 	public void electricityPeriod() throws JsonProcessingException {
-		machineService.electricityPeriod(220);
+//		machineService.electricityPeriod();
 //		LocalDate currentDate = LocalDate.now();
 //		LocalDate period = LocalDate.of(currentDate.getYear(), currentDate.getMonthValue()-1, 1);
 //		ElectricityPeriod data = machineDataDao.machineITAll(period);
@@ -79,7 +88,7 @@ public class MachineServiceTest {
 	
 	@Test
 	public void machineName() throws JsonProcessingException {
-//		 List<EquipmentName> data = machineDataDao.machineName();
+//		List<EquipmentName> data = machineDataDao.machineName();
 //		System.out.println(objectMapper.writeValueAsString(data));
 		machineService.findMachineName();
 		
@@ -106,12 +115,31 @@ public class MachineServiceTest {
 	public void machineVoltage() throws JsonProcessingException {
 //		double data = machineDataDao.machineVoltage();
 //		System.out.println(objectMapper.writeValueAsString(data));
-		machineService.getVoltage();
+//		machineService.getVoltage();
 	}
 	
 	@Test
 	public void updateVoltage() {
 //		machineDataDao.updateVoltage(110);
-		machineService.updateVoltage(100);
+		machineService.updateVoltage(220, "test_1");
+	}
+	
+	@Test
+	public void testDao() throws JsonProcessingException {
+//		LocalDateTime localDateTime = LocalDateTime.now();
+//		LocalDateTime start = LocalDateTime.of(localDateTime.getYear(), localDateTime.getMonth(), localDateTime.getDayOfMonth()-1, localDateTime.getHour(), 0, 0);
+//		LocalDateTime end = LocalDateTime.of(localDateTime.getYear(), localDateTime.getMonth(), localDateTime.getDayOfMonth()+1, localDateTime.getHour(), 0, 0);
+//		List<ReceiveDataOrder> data = receiveDataDao.OrderDataDay(start,end);
+//		System.out.println(objectMapper.writeValueAsString(data));
+		Equipment data = machineDataDao.findTypeByName("test_1");
+	}
+	
+	@Test
+	public void orderDataDay() {
+//		LocalDateTime localDateTime = LocalDateTime.now();
+//		LocalDateTime start = LocalDateTime.of(localDateTime.getYear(), localDateTime.getMonth(), localDateTime.getDayOfMonth()-1, localDateTime.getHour(), 0, 0);
+//		LocalDateTime end = LocalDateTime.of(localDateTime.getYear(), localDateTime.getMonth(), localDateTime.getDayOfMonth()+1, localDateTime.getHour(), 0, 0);
+//		List<ReceiveDataOrder> orderData = receiveDataDao.OrderDataDay(start,end);
+		machineService.machineNewHourData();
 	}
 }

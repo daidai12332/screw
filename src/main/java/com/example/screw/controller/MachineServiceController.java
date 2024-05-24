@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.screw.service.ifs.MachineService;
 import com.example.screw.vo.BaseRes;
 import com.example.screw.vo.ElectricityRes;
+import com.example.screw.vo.EquipmentHourRes;
+import com.example.screw.vo.EquipmentHoursDayRes;
 import com.example.screw.vo.EquipmentRes;
 import com.example.screw.vo.MachineNameReq;
 import com.example.screw.vo.MachineNameRes;
+import com.example.screw.vo.OrderAndMachineRes;
 import com.example.screw.vo.StatusAndOrderRes;
 import com.example.screw.vo.VoltageRes;
 
@@ -45,20 +48,20 @@ public class MachineServiceController {
 		return machineService.machineDataYear(machineName);
 	}
 	
-	@PostMapping(value = "screw/getVoltage")
-	public VoltageRes getVoltage() {
-		return machineService.getVoltage();
-	}
+//	@PostMapping(value = "screw/getVoltage")
+//	public VoltageRes getVoltage() {
+//		return machineService.getVoltage();
+//	}
 	
 	@PostMapping(value = "screw/updateVoltage")
-	public BaseRes updateVoltage(@RequestParam(value = "data_run_avg") double voltage) {
-		return machineService.updateVoltage(voltage);
+	public BaseRes updateVoltage(@RequestParam(value = "voltage") double voltage, @RequestParam(value = "name") String machineName) {
+		return machineService.updateVoltage(voltage, machineName);
 	}
 	
-	@PostMapping(value = "screw/electricityPeriod")
-	public ElectricityRes electricityPeriod(@RequestParam(value = "data_run_avg") double voltage) {
-		return machineService.electricityPeriod(voltage);
-	}
+//	@PostMapping(value = "screw/electricityPeriod")
+//	public ElectricityRes electricityPeriod() {
+//		return machineService.electricityPeriod();
+//	}
 	
 	@PostMapping(value = "screw/findMachineName")
 	public MachineNameRes findMachineName() {
@@ -75,5 +78,18 @@ public class MachineServiceController {
 		return machineService.addMachine(machineName);
 	}
 
+	@PostMapping(value = "screw/machineNewHourData")
+	public EquipmentHourRes machineNewHourData() {
+		return machineService.machineNewHourData();
+	}
 	
+	@PostMapping(value = "screw/machineHoursData")
+	public  EquipmentHoursDayRes machineHoursData() {
+		return machineService.machineHoursData();
+	}
+	
+	@PostMapping(value = "screw/orderDataDay")
+	public  OrderAndMachineRes orderDataDay() {
+		return machineService.orderDataDay();
+	}
 }

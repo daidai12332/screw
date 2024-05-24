@@ -2,6 +2,8 @@ package com.example.screw.vo;
 
 public class ElectricityPeriod {
 
+	private String name;
+	
 	private double runIT;  
 	
 	private double idleIT;  
@@ -12,8 +14,9 @@ public class ElectricityPeriod {
 		super();
 	}
 
-	public ElectricityPeriod(double runIT, double idleIT, double errorIT) {
+	public ElectricityPeriod(String name, double runIT, double idleIT, double errorIT) {
 		super();
+		this.name = name;
 		this.runIT = runIT;
 		this.idleIT = idleIT;
 		this.errorIT = errorIT;
@@ -42,6 +45,15 @@ public class ElectricityPeriod {
 	public void setErrorIT(double errorIT) {
 		this.errorIT = errorIT;
 	}
-	
+
+
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 }

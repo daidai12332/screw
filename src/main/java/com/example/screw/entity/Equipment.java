@@ -23,6 +23,15 @@ public class Equipment {
 	@Id
 	@Column(name = "data_date")
 	private LocalDate dataDate;       // 資料統計日期
+	
+	@Column(name = "pass")
+	private int pass;       			// 生產數量
+	
+	@Column(name = "voltage")
+	private int voltage;       			// 設備電壓
+	
+	@Column(name = "type")
+	private String type;       			// 設備類型
 
 	@NotNull(message = "電壓不能為空")
 	@Column(name = "data_run_avg")
@@ -56,11 +65,15 @@ public class Equipment {
 		super();
 	}
 
-	public Equipment(String name, LocalDate dataDate, double dataRunAvg, double dataIdleAvg, double dataErrorAvg,
+	public Equipment(@NotBlank(message = "設備名稱不能為空") String name, LocalDate dataDate, int pass, int voltage,
+			String type, @NotNull(message = "電壓不能為空") double dataRunAvg, double dataIdleAvg, double dataErrorAvg,
 			double dataPassAvg, double dataCurrentAvg, double runIT, double idleIT, double errorIT, boolean del) {
 		super();
 		this.name = name;
 		this.dataDate = dataDate;
+		this.pass = pass;
+		this.voltage = voltage;
+		this.type = type;
 		this.dataRunAvg = dataRunAvg;
 		this.dataIdleAvg = dataIdleAvg;
 		this.dataErrorAvg = dataErrorAvg;
@@ -69,26 +82,6 @@ public class Equipment {
 		this.runIT = runIT;
 		this.idleIT = idleIT;
 		this.errorIT = errorIT;
-		this.del = del;
-
-	}
-
-	public Equipment(String name, LocalDate dataDate) {
-		super();
-		this.name = name;
-		this.dataDate = dataDate;
-	}
-	
-
-	public Equipment(@NotNull(message = "電壓不能為空") double dataRunAvg) {
-		super();
-		this.dataRunAvg = dataRunAvg;
-	}
-
-	public Equipment(String name, LocalDate dataDate, boolean del) {
-		super();
-		this.name = name;
-		this.dataDate = dataDate;
 		this.del = del;
 	}
 
@@ -106,6 +99,30 @@ public class Equipment {
 
 	public void setDataDate(LocalDate dataDate) {
 		this.dataDate = dataDate;
+	}
+
+	public int getPass() {
+		return pass;
+	}
+
+	public void setPass(int pass) {
+		this.pass = pass;
+	}
+
+	public int getVoltage() {
+		return voltage;
+	}
+
+	public void setVoltage(int voltage) {
+		this.voltage = voltage;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public double getDataRunAvg() {

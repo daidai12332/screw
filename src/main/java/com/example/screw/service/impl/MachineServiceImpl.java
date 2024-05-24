@@ -16,19 +16,31 @@ import org.springframework.util.StringUtils;
 
 import com.example.screw.constants.RtnCode;
 import com.example.screw.entity.Equipment;
+import com.example.screw.entity.EquipmentHour;
+import com.example.screw.entity.Order;
 import com.example.screw.entity.ReceiveData;
+import com.example.screw.repository.EquipmentHourDao;
 import com.example.screw.repository.MachineDataDao;
+import com.example.screw.repository.OrderDao;
 import com.example.screw.repository.ReceiveDataDao;
 import com.example.screw.service.ifs.MachineService;
 import com.example.screw.vo.BaseRes;
 import com.example.screw.vo.ElectricityPeriod;
 import com.example.screw.vo.ElectricityRes;
+import com.example.screw.vo.EquipmentHourRes;
+import com.example.screw.vo.EquipmentHoursDayRes;
+import com.example.screw.vo.EquipmentName;
 import com.example.screw.vo.EquipmentRes;
 import com.example.screw.vo.MachineNameReq;
 import com.example.screw.vo.MachineNameRes;
+import com.example.screw.vo.MachineVoltage;
+import com.example.screw.vo.OrderAndMachine;
+import com.example.screw.vo.OrderAndMachineRes;
 import com.example.screw.vo.ReceiveDataCurrent;
 import com.example.screw.vo.ReceiveDataLong;
+import com.example.screw.vo.ReceiveDataOrder;
 import com.example.screw.vo.ReceiveDataStatus;
+import com.example.screw.vo.ReceivePassNumber;
 import com.example.screw.vo.StatusAndOrderRes;
 import com.example.screw.vo.VoltageRes;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -44,7 +56,13 @@ public class MachineServiceImpl implements MachineService{
 	
 	@Autowired
 	private ReceiveDataDao receiveDataDao;
-
+	
+	@Autowired
+	private EquipmentHourDao equipmentHourDao;
+	
+	@Autowired
+	private OrderDao orderDao;
+	
 	@Override  
 	@Scheduled(cron = "0 55 23 * * ?")
 	public void machineDataDay(){
@@ -58,6 +76,7 @@ public class MachineServiceImpl implements MachineService{
 		List<ReceiveDataCurrent> runCurrentAvg = machineDataDao.machineRunCurrentAvg();
 		List<ReceiveDataCurrent> idleCurrentAvg = machineDataDao.machineIdleCurrentAvg();
 		List<ReceiveDataCurrent> errorCurrentAvg = machineDataDao.machineErrorCurrentAvg();
+		List<MachineVoltage> voltage = machineDataDao.machineVoltage();
 		
 		
 		List<Equipment> equList = new ArrayList<>();
@@ -75,16 +94,17 @@ public class MachineServiceImpl implements MachineService{
 		int index = 0;
 		double statusSum = 0;
 		
+//		System.out.println(machineStatusRun.size());
+		
 		for(ReceiveDataLong item : machineDay) {
 			passAvg = (double)item.getPass()/(double)(item.getPass()+item.getNg());
 			equ.setDataPassAvg(passAvg);
 			currentAvg = item.getCurrent();
 			equ.setDataCurrentAvg(currentAvg);
 			equ.setName(item.getName());
-
 			equ.setDataDate(today);
-
-			
+			equ.setPass((int)item.getPass());
+			equ.setVoltage((int)voltage.get(index).getVoltage());
 
 			equ.setDel(false);
 			runIT = runCurrentAvg.get(index).getCurrent()*24/1000;
@@ -93,6 +113,7 @@ public class MachineServiceImpl implements MachineService{
 			equ.setIdleIT(idleIT);
 			errorIT = errorCurrentAvg.get(index).getCurrent()*24/1000;
 			equ.setErrorIT(errorIT);
+			
 			statusSum = (double)machineStatusIdle.get(index).getStatus()+(double)machineStatusRun.get(index).getStatus()+(double)machineStatusError.get(index).getStatus(); 
 			runAvg = (double)machineStatusRun.get(index).getStatus()/statusSum;
 			equ.setDataRunAvg(runAvg);
@@ -103,7 +124,6 @@ public class MachineServiceImpl implements MachineService{
 			index++;
 			machineDataDao.save(equ);
 //			equList.add(equ);
-			
 				
 		}
 //		System.out.println(equList.get(index).getName());
@@ -148,56 +168,58 @@ public class MachineServiceImpl implements MachineService{
 		return new EquipmentRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), machineDataDao.machineDataStatusYear(machineName));
 	}
 	
-	@Override
-	public VoltageRes getVoltage() {
-		
-		return new VoltageRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), machineDataDao.machineVoltage());
-	}
+//	@Override
+//	public VoltageRes getVoltage() {
+//
+//		return new VoltageRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), machineDataDao.machineVoltage());
+//	}
 	
 	@Override
-	public BaseRes updateVoltage(double voltage) {
+	public BaseRes updateVoltage(double voltage, String machineName) {
 		
-		machineDataDao.updateVoltage(voltage);
+		machineDataDao.updateVoltage(voltage, machineName);
 		return new BaseRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage());
 	}
 	
-	@Override
-	public ElectricityRes electricityPeriod(double voltage) {
-		
-		LocalDate today = LocalDate.now();
-		
-		if(voltage == 0 ) {
-			return new ElectricityRes (RtnCode.VOLTAGE_CANNOT_BE_ZERO.getCode(), RtnCode.VOLTAGE_CANNOT_BE_ZERO.getMessage());
-		}
-		
-		if(today.getMonthValue() % 2 == 0) {
-			LocalDate period = LocalDate.of(today.getYear(), today.getMonthValue()-1, 1);
-			ElectricityRes res = caculateElectricity(period, voltage);
-			return res;
-			
-		}else {
-			LocalDate period = LocalDate.of(today.getYear(), today.getMonthValue(), 1);
-			ElectricityRes res = caculateElectricity(period, voltage);
-			return res;
-		}
-		
-
-	}
-
-	private ElectricityRes caculateElectricity(LocalDate period, double voltage) {
-		ElectricityRes electricity = new ElectricityRes();
-		 ElectricityPeriod machineIT = machineDataDao.machineITAll(period);
-		double runElectricity = 0;
-		double idleElectricity = 0;
-		double errorElectricity = 0;
-		runElectricity = voltage*machineIT.getRunIT();
-		idleElectricity = voltage*machineIT.getIdleIT();
-		errorElectricity = voltage*machineIT.getErrorIT();
-		electricity.setRunElectricity(runElectricity);
-		electricity.setIdleElectricity(idleElectricity);
-		electricity.setErrorElectricity(errorElectricity);
-		return new ElectricityRes (RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), electricity.getRunElectricity(), electricity.getIdleElectricity(), electricity.getErrorElectricity());
-	}
+//	@Override
+//	public ElectricityRes electricityPeriod() {
+//		
+//		LocalDate today = LocalDate.now();
+//		
+//		if(today.getMonthValue() % 2 == 0) {
+//			LocalDate period = LocalDate.of(today.getYear(), today.getMonthValue()-1, 1);
+//			ElectricityRes res = caculateElectricity(period);
+//			return res;
+//			
+//		}else {
+//			LocalDate period = LocalDate.of(today.getYear(), today.getMonthValue(), 1);
+//			ElectricityRes res = caculateElectricity(period);
+//			return res;
+//		}
+//		
+//
+//	}
+//
+//	private ElectricityRes caculateElectricity(LocalDate period) {
+//		ElectricityRes electricity = new ElectricityRes();
+//		List<ElectricityPeriod> machineIT = machineDataDao.machineITAll(period);
+//		List<MachineVoltage> voltage = machineDataDao.machineVoltage();
+//		double runElectricity = 0;
+//		double idleElectricity = 0;
+//		double errorElectricity = 0;
+//		int index = 0;
+//		for(ElectricityPeriod item : machineIT) {
+//			runElectricity += voltage.get(index).getVoltage()*machineIT.get(index).getRunIT();
+//			idleElectricity += voltage.get(index).getVoltage()*machineIT.get(index).getIdleIT();
+//			errorElectricity += voltage.get(index).getVoltage()*machineIT.get(index).getErrorIT();
+//			index++;
+//		}
+//		
+//		electricity.setRunElectricity(runElectricity);
+//		electricity.setIdleElectricity(idleElectricity);
+//		electricity.setErrorElectricity(errorElectricity);
+//		return new ElectricityRes (RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), electricity.getRunElectricity(), electricity.getIdleElectricity(), electricity.getErrorElectricity());
+//	}
 
 	@Override
 	public MachineNameRes findMachineName() {
@@ -235,6 +257,129 @@ public class MachineServiceImpl implements MachineService{
 	}
 
 	
+	
+	@Override
+	@Scheduled(cron = "0 0 * * * ?")
+	public void machineDataHour() {
+		EquipmentHour equh = new EquipmentHour();
+		LocalDateTime localDateTime = LocalDateTime.now();
+		LocalDateTime start = LocalDateTime.of(localDateTime.getYear(), localDateTime.getMonth(), localDateTime.getDayOfMonth(), localDateTime.getHour()-1, 0, 0);
+		LocalDateTime end = LocalDateTime.of(localDateTime.getYear(), localDateTime.getMonth(), localDateTime.getDayOfMonth(), localDateTime.getHour(), 0, 0);
+		List<ReceiveDataLong> hourData = receiveDataDao.machineDataHour(start,end);
+		List<MachineVoltage> voltage = machineDataDao.machineVoltage();
+		List<EquipmentName> machineName = machineDataDao. machineName();
+		int nameIndex = 0;
+		int index = 0;
+		double power = 0;
+		
+		if(hourData.size() == 0) {
+			for(EquipmentName item:machineName) {
+				equipmentHourDao.insertEquipmentHourData(item.getName(), 0, 0, start,"");
+			}
+		}
+		
+		for(ReceiveDataLong item:hourData) {
+			
+			power = voltage.get(index).getVoltage()*item.getCurrent();
+			index++;
+			Equipment type = machineDataDao.findTypeByName(item.getName());
+			equipmentHourDao.insertEquipmentHourData(item.getName(), (int)item.getPass(), power, start,type.getType());
+		}
+		
+	}
 
+	@Override
+	public EquipmentHourRes machineNewHourData() {
+		LocalDateTime localDateTime = LocalDateTime.now();
+		LocalDateTime start = LocalDateTime.of(localDateTime.getYear(), localDateTime.getMonth(), localDateTime.getDayOfMonth(), localDateTime.getHour(), 0, 0);
+		LocalDateTime end = LocalDateTime.of(localDateTime.getYear(), localDateTime.getMonth(), localDateTime.getDayOfMonth(), localDateTime.getHour()+1, 0, 0);
+		List<ReceiveDataLong> hourData = receiveDataDao.machineDataHour(start, end);
+		List<MachineVoltage> voltage = machineDataDao.machineVoltage();
+		
+		List<EquipmentHour>equhList = new ArrayList<>();
+		
+		
+		int index = 0;
+		double power = 0;
+		
+		
+		
+		for(ReceiveDataLong item:hourData) {
+			EquipmentHour equh = new EquipmentHour();
+			equh.setId(index);
+			equh.setName(item.getName());
+			equh.setPass((int)item.getPass());
+			Equipment type = machineDataDao.findTypeByName(item.getName());
+			equh.setType(type.getType());
+			power = voltage.get(index).getVoltage()*item.getCurrent();
+			equh.setPower(power);
+			equh.setTime(localDateTime);
+			equhList.add(index,equh);
+			index++;
+			
+		}
+		return new EquipmentHourRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), equhList);
+	}
+
+	
+	@Override
+	public EquipmentHoursDayRes machineHoursData() {
+		LocalDateTime localDateTime = LocalDateTime.now();
+		LocalDateTime start = LocalDateTime.of(localDateTime.getYear(), localDateTime.getMonth(), localDateTime.getDayOfMonth()-1, localDateTime.getHour(), 0, 0);
+		LocalDateTime end = LocalDateTime.of(localDateTime.getYear(), localDateTime.getMonth(), localDateTime.getDayOfMonth(), localDateTime.getHour(), 0, 0);
+		
+		return new EquipmentHoursDayRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), equipmentHourDao.getEquipmentHourData(start,end));
+	}
+
+	@Override
+	public OrderAndMachineRes orderDataDay() {
+		LocalDateTime localDateTime = LocalDateTime.now();
+		LocalDateTime start = LocalDateTime.of(localDateTime.getYear(), localDateTime.getMonth(), localDateTime.getDayOfMonth()-1, localDateTime.getHour(), 0, 0);
+		LocalDateTime end = LocalDateTime.of(localDateTime.getYear(), localDateTime.getMonth(), localDateTime.getDayOfMonth()+1, localDateTime.getHour(), 0, 0);
+		List<ReceiveDataOrder> orderData = receiveDataDao.OrderDataDay(start,end);
+		List<ReceivePassNumber> passNumber = receiveDataDao.OrderPassNumber(start,end);
+		List<Order> orderToday = orderDao.selectOrderToday(start, end);
+		List<OrderAndMachine> orderMachineList = new ArrayList<>();
+		
+		int index = 0;
+		int indexNumber = 0;
+		long addTime = 0;
+		double passAvg = 0;
+		int subNumber = 0;
+		
+		
+		for(ReceiveDataOrder item:orderData) {
+			OrderAndMachine orderMachine = new OrderAndMachine();
+			orderMachine.setName(item.getName());
+			orderMachine.setOrderNumber(item.getOrderNumber());
+			orderMachine.setPass((int)item.getPass());
+			passAvg = (double)item.getPass()/(double)(item.getPass()+item.getNg());
+			orderMachine.setPassAvg(passAvg);
+			if(orderMachine.getOrderNumber().equals(orderToday.get(index).getOrderNumber())) {
+				orderMachine.setAim(orderToday.get(index).getAim());
+				subNumber = orderMachine.getAim()-orderMachine.getPass();
+				addTime = (long)Math.ceil(subNumber/passNumber.get(indexNumber).getPass()*3.5);
+				orderMachine.setFinishTime(localDateTime.plusSeconds(addTime));
+				indexNumber++;
+			}else {
+				index++;
+				orderMachine.setAim(orderToday.get(index).getAim());
+				subNumber = orderMachine.getAim()-orderMachine.getPass();
+				addTime = (long)Math.ceil(subNumber/passNumber.get(indexNumber).getPass()*3.5);
+				orderMachine.setFinishTime(localDateTime.plusSeconds(addTime));
+				indexNumber++;
+			}
+			
+			orderMachine.setUpdateTime(localDateTime);
+			orderMachineList.add(orderMachine);
+		}
+		
+		return new OrderAndMachineRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), orderMachineList);
+	}
+	
+	
+
+	
+	
 	
 }

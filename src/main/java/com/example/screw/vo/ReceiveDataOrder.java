@@ -1,37 +1,25 @@
 package com.example.screw.vo;
 
-
-
-public class ReceiveDataLong {
+public class ReceiveDataOrder {
 	
 	private String name;
 	
-	private double current;
+	private String orderNumber;
 	
 	private long pass;
 	
 	private long ng;
 
-	public ReceiveDataLong() {
+	public ReceiveDataOrder() {
 		super();
 	}
 
-	public ReceiveDataLong(String name, double current, long pass, long ng) {
+	public ReceiveDataOrder(String name, String orderNumber, long pass, long ng) {
 		super();
 		this.name = name;
-		this.current = current;
+		this.orderNumber = orderNumber;
 		this.pass = pass;
 		this.ng = ng;
-	}
-	
-	
-
-	public ReceiveDataLong(String name, long pass, double current) {
-		super();
-		this.name = name;
-		this.pass = pass;
-		this.current = current;
-		
 	}
 
 	public String getName() {
@@ -42,12 +30,12 @@ public class ReceiveDataLong {
 		this.name = name;
 	}
 
-	public double getCurrent() {
-		return current;
+	public String getOrderNumber() {
+		return orderNumber;
 	}
 
-	public void setCurrent(double current) {
-		this.current = current;
+	public void setOrderNumber(String orderNumber) {
+		this.orderNumber = orderNumber;
 	}
 
 	public long getPass() {
@@ -65,5 +53,5 @@ public class ReceiveDataLong {
 	public void setNg(long ng) {
 		this.ng = ng;
 	}
-	
+
 }

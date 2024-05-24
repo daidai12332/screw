@@ -1,28 +1,33 @@
 package com.example.screw.vo;
 
+import java.util.List;
+
 public class VoltageRes extends BaseRes{
 
-	private double voltage;
+	private List<MachineVoltage> voltageList;
 
 	public VoltageRes() {
 		super();
 	}
 
+	
 	public VoltageRes(int code, String message) {
 		super(code, message);
+		
 	}
 
-	public VoltageRes(int code, String message, double voltage) {
+
+	public VoltageRes(int code, String message, List<MachineVoltage> voltageList) {
 		super(code, message);
-		this.voltage = voltage;
+		this.voltageList = voltageList;
 	}
 
-	public double getVoltage() {
-		return voltage;
+	public List<MachineVoltage> getVoltageList() {
+		return voltageList;
 	}
 
-	public void setVoltage(double voltage) {
-		this.voltage = voltage;
+	public void setVoltageList(List<MachineVoltage> voltageList) {
+		this.voltageList = voltageList;
 	}
 	
 }

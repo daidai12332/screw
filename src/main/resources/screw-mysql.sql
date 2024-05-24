@@ -28,6 +28,9 @@ CREATE TABLE IF NOT EXISTS `screw`.`order` (
 CREATE TABLE IF NOT EXISTS `screw`.`equipment` (
   `name` VARCHAR(20) NOT NULL,
   `data_date` DATE NOT NULL,
+  `pass` INT DEFAULT 0,
+  `voltage` INT DEFAULT 0,
+  `type` VARCHAR(45) NOT NULL,
   `data_run_avg` DOUBLE DEFAULT 0,
   `data_idle_avg` DOUBLE DEFAULT 0,
   `data_error_avg` DOUBLE DEFAULT 0,
@@ -44,6 +47,16 @@ CREATE TABLE IF NOT EXISTS `account` (
   `account` varchar(20) NOT NULL,
   `pwd` varchar(200) NOT NULL,
   PRIMARY KEY (`account`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS `equipment_hour` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(20) NOT NULL,
+  `pass` INT DEFAULT 0,
+  `power` DOUBLE DEFAULT 0,
+  `time` datetime DEFAULT NULL,
+  `type` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 

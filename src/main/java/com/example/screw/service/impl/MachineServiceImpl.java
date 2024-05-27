@@ -334,10 +334,10 @@ public class MachineServiceImpl implements MachineService{
 	@Override
 	public OrderAndMachineRes orderDataDay() {
 		LocalDateTime localDateTime = LocalDateTime.now();
-		LocalDateTime start = LocalDateTime.of(localDateTime.getYear(), localDateTime.getMonth(), localDateTime.getDayOfMonth()-1, localDateTime.getHour(), 0, 0);
+		LocalDateTime start = LocalDateTime.of(localDateTime.getYear()-1, localDateTime.getMonth(), localDateTime.getDayOfMonth()-1, localDateTime.getHour(), 0, 0);
 		LocalDateTime end = LocalDateTime.of(localDateTime.getYear(), localDateTime.getMonth(), localDateTime.getDayOfMonth()+1, localDateTime.getHour(), 0, 0);
-		List<ReceiveDataOrder> orderData = receiveDataDao.OrderDataDay(start,end);
-		List<ReceivePassNumber> passNumber = receiveDataDao.OrderPassNumber(start,end);
+		List<ReceiveDataOrder> orderData = receiveDataDao.OrderDataDay(end);
+		List<ReceivePassNumber> passNumber = receiveDataDao.OrderPassNumber(end);
 		List<Order> orderToday = orderDao.selectOrderToday(start, end);
 		List<OrderAndMachine> orderMachineList = new ArrayList<>();
 		

@@ -33,9 +33,9 @@ public interface ReceiveDataDao extends JpaRepository<ReceiveData, Integer>{
 	public List<ReceiveDataLong> machineDataHour(LocalDateTime start, LocalDateTime end);
 	
 	// 取所有機台最新的資料
-	@Query(value = "select new com.example.screw.vo.ReceiveDataOrder(name, orderNumber, sum(pass) as pass, sum(ng) as ng) from ReceiveData where time >= ?1 and time <= ?2 group by name, orderNumber")
-	public List<ReceiveDataOrder> OrderDataDay(LocalDateTime start, LocalDateTime end);
+	@Query(value = "select new com.example.screw.vo.ReceiveDataOrder(name, orderNumber, sum(pass) as pass, sum(ng) as ng) from ReceiveData where  time <= ?1 group by name, orderNumber")
+	public List<ReceiveDataOrder> OrderDataDay(LocalDateTime end);
 
-	@Query(value = "select new com.example.screw.vo.ReceivePassNumber(name, orderNumber, avg(pass) as pass) from ReceiveData where time >= ?1 and time <= ?2 group by name, orderNumber")
-	public List<ReceivePassNumber> OrderPassNumber(LocalDateTime start, LocalDateTime end);
+	@Query(value = "select new com.example.screw.vo.ReceivePassNumber(name, orderNumber, avg(pass) as pass) from ReceiveData where time <= ?1 group by name, orderNumber")
+	public List<ReceivePassNumber> OrderPassNumber(LocalDateTime end);
 }

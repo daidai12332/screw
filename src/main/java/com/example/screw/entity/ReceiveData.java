@@ -37,15 +37,18 @@ public class ReceiveData {
 	@Column(name = "ng") 
 	private int ng;
 	
+	@Column(name = "type") 
+	private String type;
+	
 	@Column(name = "time") 
 	private LocalDateTime time;
 
 	public ReceiveData() {
 		super();
 	}
-	
+
 	public ReceiveData(int id, String name, String status, String orderNumber, double current, int pass, int ng,
-			LocalDateTime time) {
+			String type, LocalDateTime time) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -54,6 +57,7 @@ public class ReceiveData {
 		this.current = current;
 		this.pass = pass;
 		this.ng = ng;
+		this.type = type;
 		this.time = time;
 	}
 
@@ -126,6 +130,14 @@ public class ReceiveData {
 
 	public void setNg(int ng) {
 		this.ng = ng;
+	}
+	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public LocalDateTime getTime() {

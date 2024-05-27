@@ -42,6 +42,8 @@ import com.example.screw.vo.ReceiveDataOrder;
 import com.example.screw.vo.ReceiveDataStatus;
 import com.example.screw.vo.ReceivePassNumber;
 import com.example.screw.vo.StatusAndOrderRes;
+import com.example.screw.vo.UpdateEquipment;
+import com.example.screw.vo.UpdateEquipmentReq;
 import com.example.screw.vo.VoltageRes;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -175,9 +177,12 @@ public class MachineServiceImpl implements MachineService{
 //	}
 	
 	@Override
-	public BaseRes updateVoltage(double voltage, String machineName) {
+	public BaseRes updateMachine(UpdateEquipmentReq req) {
 		
-		machineDataDao.updateVoltage(voltage, machineName);
+		for( UpdateEquipment item : req.getUpdateEquipmentList()) {
+			machineDataDao.updateVoltage(item.getName(),item.getVoltage(),item.getType(),item.getPhone(),item.getLocation(),item.getWarrantyDate(),item.getSpec(),item.getPurchaseDate(),item.getRecord());
+		}
+		
 		return new BaseRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage());
 	}
 	
@@ -197,7 +202,6 @@ public class MachineServiceImpl implements MachineService{
 //			return res;
 //		}
 //		
-//
 //	}
 //
 //	private ElectricityRes caculateElectricity(LocalDate period) {
@@ -242,21 +246,14 @@ public class MachineServiceImpl implements MachineService{
 	}
 
 	@Override
-	public BaseRes addMachine(String machineName) {
-		
-		if(!StringUtils.hasText(machineName)) {
-			return new BaseRes(RtnCode.MACHINE_NAME_CANNOT_BE_NULL.getCode(), RtnCode.MACHINE_NAME_CANNOT_BE_NULL.getMessage());
+	public BaseRes addMachine(UpdateEquipmentReq req) {
+		LocalDate day = LocalDate.of(2020, 1, 1);
+		for( UpdateEquipment item : req.getUpdateEquipmentList()) {
+			machineDataDao.insertEquipmentData(item.getName(),day,item.getVoltage(),item.getType(),item.getPhone(),item.getLocation(),item.getWarrantyDate(),item.getSpec(),item.getPurchaseDate(),item.getRecord());
 		}
-
-		Equipment equ = new Equipment();
-		LocalDate today = LocalDate.of(2020, 1, 1);
-		equ.setName(machineName);
-		equ.setDataDate(today);
-		machineDataDao.save(equ);
 		return new BaseRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage());
 	}
 
-	
 	
 	@Override
 	@Scheduled(cron = "0 0 * * * ?")

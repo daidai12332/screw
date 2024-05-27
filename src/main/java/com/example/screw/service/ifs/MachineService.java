@@ -15,6 +15,7 @@ import com.example.screw.vo.MachineNameReq;
 import com.example.screw.vo.MachineNameRes;
 import com.example.screw.vo.OrderAndMachineRes;
 import com.example.screw.vo.StatusAndOrderRes;
+import com.example.screw.vo.UpdateEquipmentReq;
 import com.example.screw.vo.VoltageRes;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -45,7 +46,7 @@ public interface MachineService {
 	
 	// 後台
 	//更新電壓
-	public BaseRes updateVoltage(double voltage, String machineName);
+	public BaseRes updateMachine(UpdateEquipmentReq req);
 	
 //	// 取得當期累積電度
 //	public ElectricityRes electricityPeriod();
@@ -60,7 +61,7 @@ public interface MachineService {
 	
 	// 後台
 	//新增設備
-	public BaseRes addMachine(String machineName);
+	public BaseRes addMachine(UpdateEquipmentReq req);
 	
 	//每小時儲存機台各項資料
 	public void machineDataHour();

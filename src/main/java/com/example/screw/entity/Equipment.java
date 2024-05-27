@@ -61,13 +61,32 @@ public class Equipment {
 	@Column(name = "del")		//設備是否被刪除
 	private boolean del;
 	
+	@Column(name = "phone")		//維修電話
+	private String phone;
+	
+	@Column(name = "location")		//購買地點
+	private String location;
+	
+	@Column(name = "warranty_date")		//保固日期
+	private LocalDate warrantyDate;
+	
+	@Column(name = "spec")		//規格
+	private String spec;
+	
+	@Column(name = "purchase_date")		//購買日期
+	private LocalDate purchaseDate;
+	
+	@Column(name = "record")		//維修紀錄
+	private String record;
+	
 	public Equipment() {
 		super();
 	}
 
 	public Equipment(@NotBlank(message = "設備名稱不能為空") String name, LocalDate dataDate, int pass, int voltage,
 			String type, @NotNull(message = "電壓不能為空") double dataRunAvg, double dataIdleAvg, double dataErrorAvg,
-			double dataPassAvg, double dataCurrentAvg, double runIT, double idleIT, double errorIT, boolean del) {
+			double dataPassAvg, double dataCurrentAvg, double runIT, double idleIT, double errorIT, boolean del,
+			String phone, String location, LocalDate warrantyDate, String spec, LocalDate purchaseDate, String record) {
 		super();
 		this.name = name;
 		this.dataDate = dataDate;
@@ -83,6 +102,12 @@ public class Equipment {
 		this.idleIT = idleIT;
 		this.errorIT = errorIT;
 		this.del = del;
+		this.phone = phone;
+		this.location = location;
+		this.warrantyDate = warrantyDate;
+		this.spec = spec;
+		this.purchaseDate = purchaseDate;
+		this.record = record;
 	}
 
 	public String getName() {
@@ -195,6 +220,54 @@ public class Equipment {
 
 	public void setDel(boolean del) {
 		this.del = del;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public LocalDate getWarrantyDate() {
+		return warrantyDate;
+	}
+
+	public void setWarrantyDate(LocalDate warrantyDate) {
+		this.warrantyDate = warrantyDate;
+	}
+
+	public String getSpec() {
+		return spec;
+	}
+
+	public void setSpec(String spec) {
+		this.spec = spec;
+	}
+
+	public LocalDate getPurchaseDate() {
+		return purchaseDate;
+	}
+
+	public void setPurchaseDate(LocalDate purchaseDate) {
+		this.purchaseDate = purchaseDate;
+	}
+
+	public String getRecord() {
+		return record;
+	}
+
+	public void setRecord(String record) {
+		this.record = record;
 	}
 	
 }

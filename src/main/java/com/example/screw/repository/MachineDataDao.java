@@ -77,8 +77,12 @@ public interface MachineDataDao extends JpaRepository<Equipment, EquipmentId>{
 	
 	//更新電壓
 	@Modifying
-	@Query(value = "UPDATE screw.equipment SET voltage = ?1 WHERE name = ?2", nativeQuery = true)
-	public void updateVoltage(double voltage, String machineName);
+	@Query(value = "UPDATE screw.equipment SET voltage = ?2, type = ?3, phone = ?4, location = ?5, warranty_date = ?6, spec = ?7, purchase_date = ?8, record = ?9 WHERE name = ?1", nativeQuery = true)
+	public void updateVoltage(String machineName, double voltage, String type, String phone, String location, LocalDate warrantyDate, String spec, LocalDate purchaseDate, String record);
+	
+	@Modifying
+	@Query(value = "INSERT INTO screw.equipment (name, data_date, voltage, type, phone, location, warranty_date, spec, purchase_date, record) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)", nativeQuery = true)
+	public void insertEquipmentData(String machineName,LocalDate dataDate, double voltage, String type, String phone, String location, LocalDate warrantyDate, String spec, LocalDate purchaseDate, String record);
 	
 	// 所有機台一期的總電度
 	@Query(value = "select new com.example.screw.vo.ElectricityPeriod(name, sum(runIT) as runIT, sum(idleIT) as idleIT, sum(errorIT) as errorIT) from Equipment where del = 'false' and  data_date >= ?1 group by name")

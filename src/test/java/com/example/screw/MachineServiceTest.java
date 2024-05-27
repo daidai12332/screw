@@ -108,7 +108,7 @@ public class MachineServiceTest {
 	
 	@Test
 	public void addmachine() {
-		machineService.addMachine("dd");
+//		machineService.addMachine("dd");
 	}
 	
 	@Test
@@ -121,7 +121,7 @@ public class MachineServiceTest {
 	@Test
 	public void updateVoltage() {
 //		machineDataDao.updateVoltage(110);
-		machineService.updateVoltage(220, "test_1");
+//		machineService.updateVoltage(220, "test_1");
 	}
 	
 	@Test

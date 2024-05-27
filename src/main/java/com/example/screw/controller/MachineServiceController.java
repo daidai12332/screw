@@ -19,6 +19,7 @@ import com.example.screw.vo.MachineNameReq;
 import com.example.screw.vo.MachineNameRes;
 import com.example.screw.vo.OrderAndMachineRes;
 import com.example.screw.vo.StatusAndOrderRes;
+import com.example.screw.vo.UpdateEquipmentReq;
 import com.example.screw.vo.VoltageRes;
 
 @CrossOrigin
@@ -53,9 +54,9 @@ public class MachineServiceController {
 //		return machineService.getVoltage();
 //	}
 	
-	@PostMapping(value = "screw/updateVoltage")
-	public BaseRes updateVoltage(@RequestParam(value = "voltage") double voltage, @RequestParam(value = "name") String machineName) {
-		return machineService.updateVoltage(voltage, machineName);
+	@PostMapping(value = "screw/updateMachine")
+	public BaseRes updateMachine(@RequestBody UpdateEquipmentReq req) {
+		return machineService.updateMachine(req);
 	}
 	
 //	@PostMapping(value = "screw/electricityPeriod")
@@ -74,8 +75,8 @@ public class MachineServiceController {
 	}
 	
 	@PostMapping(value = "screw/addMachine")
-	public BaseRes addMachine(@RequestParam(value = "name") String machineName) {
-		return machineService.addMachine(machineName);
+	public BaseRes addMachine(@RequestBody UpdateEquipmentReq req) {
+		return machineService.addMachine(req);
 	}
 
 	@PostMapping(value = "screw/machineNewHourData")

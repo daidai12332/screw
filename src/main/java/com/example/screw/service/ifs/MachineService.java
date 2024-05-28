@@ -53,7 +53,7 @@ public interface MachineService {
 	
 	// 後台
 	//取得現有設備的名稱
-	public MachineNameRes findMachineName();
+	public MachineNameRes findMachines();
 	
 	// 後台
 	//刪除設備

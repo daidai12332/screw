@@ -226,9 +226,9 @@ public class MachineServiceImpl implements MachineService{
 //	}
 
 	@Override
-	public MachineNameRes findMachineName() {
+	public MachineNameRes findMachines() {
 		
-		return new MachineNameRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), machineDataDao.machineName());
+		return new MachineNameRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), machineDataDao.machinesData());
 	}
 
 	@Override
@@ -264,7 +264,7 @@ public class MachineServiceImpl implements MachineService{
 		LocalDateTime end = LocalDateTime.of(localDateTime.getYear(), localDateTime.getMonth(), localDateTime.getDayOfMonth(), localDateTime.getHour(), 0, 0);
 		List<ReceiveDataLong> hourData = receiveDataDao.machineDataHour(start,end);
 		List<MachineVoltage> voltage = machineDataDao.machineVoltage();
-		List<EquipmentName> machineName = machineDataDao. machineName();
+		List<EquipmentName> machineName = machineDataDao. machinesData();
 		int nameIndex = 0;
 		int index = 0;
 		double power = 0;

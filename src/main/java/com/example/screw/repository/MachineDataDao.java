@@ -89,8 +89,8 @@ public interface MachineDataDao extends JpaRepository<Equipment, EquipmentId>{
 	public List<ElectricityPeriod> machineITAll(LocalDate period);
 	
 	// 取得目前有的機台名稱(除了delete是true的)
-	@Query(value = "SELECT new com.example.screw.vo.EquipmentName( name) from Equipment where del = 'false' GROUP BY name")
-	public List<EquipmentName> machineName();
+	@Query(value = "SELECT distinct new com.example.screw.vo.EquipmentName(name, voltage, type, phone, location, warrantyDate, spec, purchaseDate, record) from Equipment where del = 'false'")
+	public List<EquipmentName> machinesData();
 	
 	// 刪除設備
 	@Modifying

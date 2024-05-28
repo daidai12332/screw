@@ -142,15 +142,20 @@ public class MachineServiceImpl implements MachineService{
 		List<ReceiveDataNew> dataNow = receiveDataDao.machineDataNow();
 		List<ReceiveDataMachine> machines = receiveDataDao.ReceiveDataMachine();
 		List<ReceiveDataNew> datas = new ArrayList<>();
-		int index = machines.size();
+		int indexName = 0;
 		
 		for(ReceiveDataNew item:dataNow) {
-			if(index == 0) {
+			if(indexName == machines.size()) {
 				return new StatusAndOrderRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), datas);
-			}else {
-				datas.add(item);
 			}
-			index--;
+			
+			for(int i=0; i< machines.size(); i++) {
+				if(machines.get(i).getName().equals(item.getName())) {
+					datas.add(item);
+					indexName++;
+				}
+			}
+			
 		}
 		
 		return new StatusAndOrderRes(RtnCode.RECIVEDATA_NOT_FOUND.getCode(),RtnCode.RECIVEDATA_NOT_FOUND.getMessage());

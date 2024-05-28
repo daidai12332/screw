@@ -1,5 +1,7 @@
 package com.example.screw.vo;
 
+import java.time.LocalDateTime;
+
 public class ReceiveDataMachine {
 	
 	private String name;
@@ -21,5 +23,8 @@ public class ReceiveDataMachine {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	
+
 
 }

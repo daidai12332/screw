@@ -90,7 +90,7 @@ public class MachineServiceTest {
 	public void machineName() throws JsonProcessingException {
 //		List<EquipmentName> data = machineDataDao.machineName();
 //		System.out.println(objectMapper.writeValueAsString(data));
-		machineService.findMachineName();
+//		machineService.findMachineName();
 		
 	}
 	

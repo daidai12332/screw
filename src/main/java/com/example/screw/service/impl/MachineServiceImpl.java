@@ -301,12 +301,16 @@ public class MachineServiceImpl implements MachineService{
 		
 		
 		
+		
 		for(ReceiveDataLong item:hourData) {
 			EquipmentHour equh = new EquipmentHour();
 			equh.setId(index);
 			equh.setName(item.getName());
 			equh.setPass((int)item.getPass());
 			Equipment type = machineDataDao.findTypeByName(item.getName());
+			if(type == null) {
+				return new EquipmentHourRes(RtnCode.TYPE_NOT_FOUND.getCode(), RtnCode.TYPE_NOT_FOUND.getMessage());
+			}
 			equh.setType(type.getType());
 			power = voltage.get(index).getVoltage()*item.getCurrent();
 			equh.setPower(power);

@@ -13,6 +13,7 @@ public enum RtnCode {
 	ORDER_NUMBER_DUPLICATED(400, "單號已存在"), //
 	JSON_ERROR(400, "JSON error!!"), //
 	MACHINE_NAME_NOT_FOUND(404, "Machine name not found"),//
+	TYPE_NOT_FOUND(404, "Type not found"),//
 	PLEASE_LOGIN_FIRST(404, "Please login first"), //
 	SUCCESS_AND_SAVE(200, "Success and save!!"), //
 	SUCCESS(200, "Success!!"); //

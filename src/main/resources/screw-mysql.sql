@@ -41,12 +41,12 @@ CREATE TABLE IF NOT EXISTS `screw`.`equipment` (
   `idle_it` DOUBLE DEFAULT 0,
   `error_it` DOUBLE DEFAULT 0,
   `del` TINYINT DEFAULT '0',
-  `phone` VARCHAR(45) NOT NULL,
-  `location` VARCHAR(100) NOT NULL,
-  `warranty_date` DATE NOT NULL,
-  `spec` VARCHAR(200) NOT NULL,
-  `purchase_date` DATE NOT NULL,
-  `record` VARCHAR(200) NOT NULL,
+  `phone` VARCHAR(45) DEFAULT '',
+  `location` VARCHAR(100) DEFAULT '',
+  `warranty_date` DATE NULL,
+  `spec` VARCHAR(200) DEFAULT '',
+  `purchase_date` DATE NULL,
+  `record` VARCHAR(200) DEFAULT '',
   PRIMARY KEY (`name`, `data_date`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 

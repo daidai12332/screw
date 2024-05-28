@@ -29,21 +29,29 @@ public class MachineServiceController {
 	@Autowired
 	private MachineService machineService;
 	
+	// 首頁
+	// 取所有機台的最新資料
 	@PostMapping(value = "screw/findmachineDataNow")
 	public StatusAndOrderRes findmachineDataNow() {
 		return machineService.findmachineDataNow();
 	}
 	
+	// 前台特定機台資料
+	// 取得特定機台一週的平均各項資料
 	@PostMapping(value = "screw/machineDataWeek")
 	public EquipmentRes machineDataWeek(@RequestParam(value = "name") String machineName) {
 		return machineService.machineDataWeek(machineName);
 	}
 	
+	// 前台特定機台資料
+	// 取得機台一個月的平均各項資料
 	@PostMapping(value = "screw/machineDataMonth")
 	public EquipmentRes machineDataMonth(@RequestParam(value = "name") String machineName) {
 		return machineService.machineDataMonth(machineName);
 	}
 	
+	// 前台特定機台資料
+	// 取得機台一年的平均各項資料
 	@PostMapping(value = "screw/machineDataYear")
 	public EquipmentRes machineDataYear(@RequestParam(value = "name") String machineName) {
 		return machineService.machineDataYear(machineName);
@@ -54,6 +62,8 @@ public class MachineServiceController {
 //		return machineService.getVoltage();
 //	}
 	
+	// 後台
+	//更新機台資訊
 	@PostMapping(value = "screw/updateMachine")
 	public BaseRes updateMachine(@RequestBody UpdateEquipmentReq req) {
 		return machineService.updateMachine(req);
@@ -64,31 +74,43 @@ public class MachineServiceController {
 //		return machineService.electricityPeriod();
 //	}
 	
+	// 後台
+	//取得現有設備的各項資料
 	@PostMapping(value = "screw/findMachines")
 	public MachineNameRes findMachines() {
 		return machineService.findMachines();
 	}
 	
+	// 後台
+	//刪除設備
 	@PostMapping(value = "screw/deleteMachine")
 	public BaseRes deleteMachine(@RequestBody MachineNameReq req) {
 		return machineService.deleteMachine(req);
 	}
 	
+	// 後台
+	//新增設備
 	@PostMapping(value = "screw/addMachine")
 	public BaseRes addMachine(@RequestBody UpdateEquipmentReq req) {
 		return machineService.addMachine(req);
 	}
 
+	// 首頁當前這個小時累積資料
+	//取得最新的一個小時內的資料
 	@PostMapping(value = "screw/machineNewHourData")
 	public EquipmentHourRes machineNewHourData() {
 		return machineService.machineNewHourData();
 	}
 	
+	// 首頁之前的幾個小時累積的資料
+	//取得今日不同類型機台各項資料
 	@PostMapping(value = "screw/machineHoursData")
 	public  EquipmentHoursDayRes machineHoursData() {
 		return machineService.machineHoursData();
 	}
 	
+	// 首頁 單號
+	//取得今日有生產之單號的產量與機台等各項資料
 	@PostMapping(value = "screw/orderDataDay")
 	public  OrderAndMachineRes orderDataDay() {
 		return machineService.orderDataDay();

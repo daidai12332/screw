@@ -45,14 +45,14 @@ public interface MachineService {
 //	public VoltageRes getVoltage();
 	
 	// 後台
-	//更新電壓
+	//更新機台資訊
 	public BaseRes updateMachine(UpdateEquipmentReq req);
 	
 //	// 取得當期累積電度
 //	public ElectricityRes electricityPeriod();
 	
 	// 後台
-	//取得現有設備的名稱
+	//取得現有設備的各項資料
 	public MachineNameRes findMachines();
 	
 	// 後台

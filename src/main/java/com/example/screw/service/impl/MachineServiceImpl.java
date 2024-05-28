@@ -323,7 +323,7 @@ public class MachineServiceImpl implements MachineService{
 	public EquipmentHoursDayRes machineHoursData() {
 		LocalDateTime localDateTime = LocalDateTime.now();
 		LocalDateTime start = LocalDateTime.of(localDateTime.getYear(), localDateTime.getMonth(), localDateTime.getDayOfMonth(), localDateTime.getHour(), 0, 0);
-		LocalDateTime end = LocalDateTime.of(localDateTime.getYear(), localDateTime.getMonth(), localDateTime.getDayOfMonth(), localDateTime.getHour(), 0, 0);
+		LocalDateTime end = LocalDateTime.of(localDateTime.getYear(), localDateTime.getMonth(), localDateTime.getDayOfMonth()+1, localDateTime.getHour(), 0, 0);
 		
 		return new EquipmentHoursDayRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), equipmentHourDao.getEquipmentHourData(start,end));
 	}

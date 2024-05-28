@@ -139,21 +139,34 @@ public class MachineServiceImpl implements MachineService{
 	@Override
 	public StatusAndOrderRes findmachineDataNow() {
 		// 取所有機台最新的資料
-		List<ReceiveDataNew> dataNow = receiveDataDao.machineDataNow();
+		List<ReceiveData> dataNow = receiveDataDao.machineDataNow();
 		List<ReceiveDataMachine> machines = receiveDataDao.ReceiveDataMachine();
-		List<ReceiveDataNew> datas = new ArrayList<>();
-		int indexName = 0;
+		List<String> nameList = new ArrayList<>();
+		List<ReceiveData> datas = new ArrayList<>();
+		int number = machines.size();
+		int index = 0;
 		
-		
-		for(ReceiveDataNew item:dataNow) {
-			if(indexName == machines.size()) {
-				return new StatusAndOrderRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), datas);
-			}else if(!machines.get(indexName).getName().equals(item.getName())) {
-				indexName++;
+		for(ReceiveData item:dataNow) {
+			
+			if(index == machines.size()) {
+				return new StatusAndOrderRes(RtnCode.SUCCESS.getCode(),RtnCode.SUCCESS.getMessage(),datas);
+			}
+			
+			if(nameList.size() == 0) {
+				nameList.add(item.getName());
 				datas.add(item);
+				index++;
+			}else {
+				for(int i = 0; i<nameList.size(); i++) {
+					if(!nameList.get(i).equals(item.getName())) {
+						datas.add(item);
+						index++;
+					}
+				}
 			}
 			
 		}
+		
 		
 		return new StatusAndOrderRes(RtnCode.RECIVEDATA_NOT_FOUND.getCode(),RtnCode.RECIVEDATA_NOT_FOUND.getMessage());
 	}

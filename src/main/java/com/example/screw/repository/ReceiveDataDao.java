@@ -27,8 +27,8 @@ public interface ReceiveDataDao extends JpaRepository<ReceiveData, Integer>{
 	public void insertReceiveData(String name, String status ,String orderNumber, double current, int pass, int ng, LocalDateTime time);
 	
 	// 取所有機台最新的資料
-	@Query(value = "select distinct new com.example.screw.vo.ReceiveDataNew(name, status, orderNumber, pass, type, time) from ReceiveData ORDER BY time DESC")
-	public List<ReceiveDataNew> machineDataNow();
+	@Query(value = "select * from screw.receive_data ORDER BY time DESC ", nativeQuery = true)
+	public List<ReceiveData> machineDataNow();
 	
 	// 取得每個機台最新的一個小時接收的資料
 	@Query(value = "select new com.example.screw.vo.ReceiveDataLong(name, sum(pass) as pass, avg(current) as current) from ReceiveData where time >= ?1 and time <= ?2 group by name")

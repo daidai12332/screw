@@ -6,7 +6,7 @@ import com.example.screw.entity.ReceiveData;
 
 public class StatusAndOrderRes extends BaseRes{
 
-	private List<ReceiveDataNew> machineDataList;
+	private List<ReceiveData> machineDataList;
 
 	public StatusAndOrderRes() {
 		super();
@@ -16,18 +16,18 @@ public class StatusAndOrderRes extends BaseRes{
 		super(code, message);		
 	}
 
-	public StatusAndOrderRes(int code, String message,List<ReceiveDataNew> machineDataList) {
+	public StatusAndOrderRes(int code, String message,List<ReceiveData> machineDataList) {
 		super(code, message);
 		this.machineDataList = machineDataList;
 	}
 
 
 
-	public List<ReceiveDataNew> getMachineData() {
+	public List<ReceiveData> getMachineData() {
 		return machineDataList;
 	}
 
-	public void setMachineData(List<ReceiveDataNew> machineData) {
+	public void setMachineData(List<ReceiveData> machineData) {
 		this.machineDataList = machineData;
 	}
 	

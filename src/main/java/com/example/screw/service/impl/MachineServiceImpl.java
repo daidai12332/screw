@@ -144,16 +144,13 @@ public class MachineServiceImpl implements MachineService{
 		List<ReceiveDataNew> datas = new ArrayList<>();
 		int indexName = 0;
 		
+		
 		for(ReceiveDataNew item:dataNow) {
 			if(indexName == machines.size()) {
 				return new StatusAndOrderRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), datas);
-			}
-			
-			for(int i=0; i< machines.size(); i++) {
-				if(machines.get(i).getName().equals(item.getName())) {
-					datas.add(item);
-					indexName++;
-				}
+			}else if(!machines.get(indexName).getName().equals(item.getName())) {
+				indexName++;
+				datas.add(item);
 			}
 			
 		}

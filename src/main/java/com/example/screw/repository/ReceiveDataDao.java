@@ -12,8 +12,10 @@ import org.springframework.stereotype.Repository;
 
 import com.example.screw.entity.ReceiveData;
 import com.example.screw.vo.ReceiveDataLong;
+import com.example.screw.vo.ReceiveDataNew;
 import com.example.screw.vo.ReceiveDataOrder;
 import com.example.screw.vo.ReceivePassNumber;
+import com.example.screw.vo.ReceiveDataMachine;
 
 @Transactional
 @Repository
@@ -25,8 +27,8 @@ public interface ReceiveDataDao extends JpaRepository<ReceiveData, Integer>{
 	public void insertReceiveData(String name, String status ,String orderNumber, double current, int pass, int ng, LocalDateTime time);
 	
 	// 取所有機台最新的資料
-	@Query(value = "select * from screw.receive_data ORDER BY time DESC LIMIT 90", nativeQuery = true)
-	public List<ReceiveData> machineDataNow();
+	@Query(value = "select distinct new com.example.screw.vo.ReceiveDataNew(name, status, orderNumber, pass, type, time) from ReceiveData ORDER BY time DESC")
+	public List<ReceiveDataNew> machineDataNow();
 	
 	// 取得每個機台最新的一個小時接收的資料
 	@Query(value = "select new com.example.screw.vo.ReceiveDataLong(name, sum(pass) as pass, avg(current) as current) from ReceiveData where time >= ?1 and time <= ?2 group by name")
@@ -38,4 +40,7 @@ public interface ReceiveDataDao extends JpaRepository<ReceiveData, Integer>{
 
 	@Query(value = "select new com.example.screw.vo.ReceivePassNumber(name, orderNumber, avg(pass) as pass) from ReceiveData where time <= ?1 group by name, orderNumber")
 	public List<ReceivePassNumber> OrderPassNumber(LocalDateTime end);
+	
+	@Query(value = "select new com.example.screw.vo.ReceiveDataMachine(name) from ReceiveData group by name")
+	public List<ReceiveDataMachine> ReceiveDataMachine();
 }

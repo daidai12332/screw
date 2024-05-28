@@ -14,6 +14,7 @@ public enum RtnCode {
 	JSON_ERROR(400, "JSON error!!"), //
 	MACHINE_NAME_NOT_FOUND(404, "Machine name not found"),//
 	TYPE_NOT_FOUND(404, "Type not found"),//
+	RECIVEDATA_NOT_FOUND(404, "ReciveData not found"),//
 	PLEASE_LOGIN_FIRST(404, "Please login first"), //
 	SUCCESS_AND_SAVE(200, "Success and save!!"), //
 	SUCCESS(200, "Success!!"); //

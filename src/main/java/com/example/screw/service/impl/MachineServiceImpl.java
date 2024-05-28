@@ -38,6 +38,8 @@ import com.example.screw.vo.OrderAndMachine;
 import com.example.screw.vo.OrderAndMachineRes;
 import com.example.screw.vo.ReceiveDataCurrent;
 import com.example.screw.vo.ReceiveDataLong;
+import com.example.screw.vo.ReceiveDataMachine;
+import com.example.screw.vo.ReceiveDataNew;
 import com.example.screw.vo.ReceiveDataOrder;
 import com.example.screw.vo.ReceiveDataStatus;
 import com.example.screw.vo.ReceivePassNumber;
@@ -137,7 +139,21 @@ public class MachineServiceImpl implements MachineService{
 	@Override
 	public StatusAndOrderRes findmachineDataNow() {
 		// 取所有機台最新的資料
-		return new StatusAndOrderRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), receiveDataDao.machineDataNow());
+		List<ReceiveDataNew> dataNow = receiveDataDao.machineDataNow();
+		List<ReceiveDataMachine> machines = receiveDataDao.ReceiveDataMachine();
+		List<ReceiveDataNew> datas = new ArrayList<>();
+		int index = machines.size();
+		
+		for(ReceiveDataNew item:dataNow) {
+			if(index == 0) {
+				return new StatusAndOrderRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), datas);
+			}else {
+				datas.add(item);
+			}
+			index--;
+		}
+		
+		return new StatusAndOrderRes(RtnCode.RECIVEDATA_NOT_FOUND.getCode(),RtnCode.RECIVEDATA_NOT_FOUND.getMessage());
 	}
 	
 	@Override

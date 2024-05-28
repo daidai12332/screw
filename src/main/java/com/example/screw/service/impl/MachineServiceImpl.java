@@ -295,12 +295,8 @@ public class MachineServiceImpl implements MachineService{
 		
 		List<EquipmentHour>equhList = new ArrayList<>();
 		
-		
 		int index = 0;
 		double power = 0;
-		
-		
-		
 		
 		for(ReceiveDataLong item:hourData) {
 			EquipmentHour equh = new EquipmentHour();

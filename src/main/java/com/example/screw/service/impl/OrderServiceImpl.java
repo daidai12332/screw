@@ -104,7 +104,7 @@ public class OrderServiceImpl implements OrderService {
 		// temp 內存放搜尋的回傳值
 		List<Order> temp = orderDao.searchOrder(orderNumber, name);
 		if(CollectionUtils.isEmpty(temp)) {
-			return new SearchOrderRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), null);
+			return new SearchOrderRes(RtnCode.NO_DATA.getCode(), RtnCode.NO_DATA.getMessage(), null);
 		}
 		// resObj 是要回傳的值
 		List<ScrewMaterialObj> resObj = new ArrayList<>();

@@ -23,12 +23,12 @@ public class StatusAndOrderRes extends BaseRes{
 
 
 
-	public List<ReceiveData> getMachineData() {
+	public List<ReceiveData> getMachineDataList() {
 		return machineDataList;
 	}
 
-	public void setMachineData(List<ReceiveData> machineData) {
-		this.machineDataList = machineData;
+	public void setMachineDataList(List<ReceiveData> machineDataList) {
+		this.machineDataList = machineDataList;
 	}
 	
 	

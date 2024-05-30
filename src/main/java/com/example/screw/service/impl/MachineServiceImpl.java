@@ -172,7 +172,7 @@ public class MachineServiceImpl implements MachineService{
 		}
 		
 		
-		return new StatusAndOrderRes(RtnCode.RECIVEDATA_NOT_FOUND.getCode(),RtnCode.RECIVEDATA_NOT_FOUND.getMessage());
+		return new StatusAndOrderRes(RtnCode.RECIVEDATA_ERROR.getCode(),RtnCode.RECIVEDATA_ERROR.getMessage());
 	}
 	
 	@Override
@@ -369,12 +369,10 @@ public class MachineServiceImpl implements MachineService{
 		LocalDateTime start = LocalDateTime.of(localDateTime.getYear()-1, localDateTime.getMonth(), localDateTime.getDayOfMonth()-1, localDateTime.getHour(), 0, 0);
 		LocalDateTime end = LocalDateTime.of(localDateTime.getYear(), localDateTime.getMonth(), localDateTime.getDayOfMonth()+1, localDateTime.getHour(), 0, 0);
 		List<ReceiveDataOrder> orderData = receiveDataDao.OrderDataDay(end);
-		List<ReceivePassNumber> passNumber = receiveDataDao.OrderPassNumber(end);
 		List<Order> orderToday = orderDao.selectOrderToday(start, end);
 		List<OrderAndMachine> orderMachineList = new ArrayList<>();
 		
 		int index = 0;
-		int indexNumber = 0;
 		long addTime = 0;
 		double passAvg = 0;
 		int subNumber = 0;
@@ -382,25 +380,22 @@ public class MachineServiceImpl implements MachineService{
 		
 		for(ReceiveDataOrder item:orderData) {
 			OrderAndMachine orderMachine = new OrderAndMachine();
-			orderMachine.setName(item.getName());
+			orderMachine.setType(item.getType());
 			orderMachine.setOrderNumber(item.getOrderNumber());
 			orderMachine.setPass((int)item.getPass());
 			passAvg = (double)item.getPass()/(double)(item.getPass()+item.getNg());
 			orderMachine.setPassAvg(passAvg);
-			if(orderMachine.getOrderNumber().equals(orderToday.get(index).getOrderNumber())) {
-				orderMachine.setAim(orderToday.get(index).getAim());
-				subNumber = orderMachine.getAim()-orderMachine.getPass();
-				addTime = (long)Math.ceil(subNumber/passNumber.get(indexNumber).getPass()*3.5);
-				orderMachine.setFinishTime(localDateTime.plusSeconds(addTime));
-				indexNumber++;
-			}else {
-				index++;
-				orderMachine.setAim(orderToday.get(index).getAim());
-				subNumber = orderMachine.getAim()-orderMachine.getPass();
-				addTime = (long)Math.ceil(subNumber/passNumber.get(indexNumber).getPass()*3.5);
-				orderMachine.setFinishTime(localDateTime.plusSeconds(addTime));
-				indexNumber++;
+			
+			for(int i = 0; i<orderToday.size(); i++) {
+				if(orderMachine.getOrderNumber().equals(orderToday.get(i).getOrderNumber())) {
+					orderMachine.setAim(orderToday.get(i).getAim());
+					subNumber = orderMachine.getAim()-orderMachine.getPass();
+					addTime = (long)Math.ceil(subNumber/item.getNumber()*3.5);
+					orderMachine.setFinishTime(localDateTime.plusSeconds(addTime));
+					
+				}
 			}
+			
 			
 			orderMachine.setUpdateTime(localDateTime);
 			orderMachineList.add(orderMachine);

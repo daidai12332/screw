@@ -12,7 +12,7 @@ public class OrderAndMachine {
 	
 	private double passAvg;
 	
-	private String name;
+	private String type;
 	
 	private LocalDateTime finishTime;
 	
@@ -23,14 +23,14 @@ public class OrderAndMachine {
 		
 	}
 
-	public OrderAndMachine(String orderNumber, int aim, int pass, double passAvg, String name, LocalDateTime finishTime,
+	public OrderAndMachine(String orderNumber, int aim, int pass, double passAvg, String type, LocalDateTime finishTime,
 			LocalDateTime updateTime) {
 		super();
 		this.orderNumber = orderNumber;
 		this.aim = aim;
 		this.pass = pass;
 		this.passAvg = passAvg;
-		this.name = name;
+		this.type = type;
 		this.finishTime = finishTime;
 		this.updateTime = updateTime;
 	}
@@ -67,12 +67,12 @@ public class OrderAndMachine {
 		this.passAvg = passAvg;
 	}
 
-	public String getName() {
-		return name;
+	public String getType() {
+		return type;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public LocalDateTime getFinishTime() {

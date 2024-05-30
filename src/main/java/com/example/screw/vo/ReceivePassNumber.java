@@ -2,7 +2,7 @@ package com.example.screw.vo;
 
 public class ReceivePassNumber {
 	
-	private String name;
+	private String type;
 	
 	private String orderNumber;
 	
@@ -12,19 +12,19 @@ public class ReceivePassNumber {
 		super();
 	}
 
-	public ReceivePassNumber(String name, String orderNumber, double pass) {
+	public ReceivePassNumber(String type, String orderNumber, double pass) {
 		super();
-		this.name = name;
+		this.type = type;
 		this.orderNumber = orderNumber;
 		this.pass = pass;
 	}
 
-	public String getName() {
-		return name;
+	public String getType() {
+		return type;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public String getOrderNumber() {

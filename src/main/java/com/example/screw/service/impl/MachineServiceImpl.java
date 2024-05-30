@@ -141,10 +141,10 @@ public class MachineServiceImpl implements MachineService{
 		// 取所有機台最新的資料
 		List<ReceiveData> dataNow = receiveDataDao.machineDataNow();
 		List<ReceiveDataMachine> machines = receiveDataDao.ReceiveDataMachine();
-		List<String> nameList = new ArrayList<>();
 		List<ReceiveData> datas = new ArrayList<>();
-		int number = machines.size();
+		int number = 0;
 		int index = 0;
+		
 		
 		for(ReceiveData item:dataNow) {
 			
@@ -152,16 +152,20 @@ public class MachineServiceImpl implements MachineService{
 				return new StatusAndOrderRes(RtnCode.SUCCESS.getCode(),RtnCode.SUCCESS.getMessage(),datas);
 			}
 			
-			if(nameList.size() == 0) {
-				nameList.add(item.getName());
+			if(datas.size() == 0) {
 				datas.add(item);
 				index++;
 			}else {
-				for(int i = 0; i<nameList.size(); i++) {
-					if(!nameList.get(i).equals(item.getName())) {
-						datas.add(item);
-						index++;
+				for(int i = 0; i<datas.size(); i++) {
+					if(datas.get(i).getName().equals(item.getName())) {
+						number = 0;
+						number++;
 					}
+				}
+				
+				if(number == 0) {
+					datas.add(item);
+					index++;
 				}
 			}
 			

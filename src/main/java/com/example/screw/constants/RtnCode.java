@@ -9,6 +9,7 @@ public enum RtnCode {
 	ACCOUNT_NOT_EXISTS(400, "帳號不存在"), //
 	NO_DATA(400, "查無資料"), //
 	ACCOUNT_EXISTS(400, "Account already exists !!"), //
+	NEED_MACHINE_NAME(400,"Need machine name !!"),//
 	VOLTAGE_CANNOT_ZERO(400, "Voltage_Cannot_Zero"),//
 	ORDER_NUMBER_NOT_EXISTS(400, "Not exists order numner !!"), //
 	ORDER_NUMBER_DUPLICATED(400, "單號已存在"), //

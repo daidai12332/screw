@@ -214,7 +214,12 @@ public class MachineServiceImpl implements MachineService{
 	@Override
 	public BaseRes updateMachine(UpdateEquipmentReq req) {
 		
+		int index = 0;
+		
 		for( UpdateEquipment item : req.getUpdateEquipmentList()) {
+			if(!StringUtils.hasText(req.getUpdateEquipmentList().get(index).getName())) {
+				return new BaseRes(RtnCode.NEED_MACHINE_NAME.getCode(), RtnCode.NEED_MACHINE_NAME.getMessage());
+			}
 			machineDataDao.updateVoltage(item.getName(),item.getVoltage(),item.getType(),item.getPhone(),item.getLocation(),item.getWarrantyDate(),item.getSpec(),item.getPurchaseDate(),item.getRecord());
 		}
 		
@@ -283,7 +288,11 @@ public class MachineServiceImpl implements MachineService{
 	@Override
 	public BaseRes addMachine(UpdateEquipmentReq req) {
 		LocalDate day = LocalDate.of(2020, 1, 1);
+		int index = 0;
 		for( UpdateEquipment item : req.getUpdateEquipmentList()) {
+			if(!StringUtils.hasText(req.getUpdateEquipmentList().get(index).getName())) {
+				return new BaseRes(RtnCode.NEED_MACHINE_NAME.getCode(), RtnCode.NEED_MACHINE_NAME.getMessage());
+			}
 			machineDataDao.insertEquipmentData(item.getName(),day,item.getVoltage(),item.getType(),item.getPhone(),item.getLocation(),item.getWarrantyDate(),item.getSpec(),item.getPurchaseDate(),item.getRecord());
 		}
 		return new BaseRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage());

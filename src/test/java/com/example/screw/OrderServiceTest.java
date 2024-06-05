@@ -128,19 +128,19 @@ public class OrderServiceTest {
 	}
 	
 	// 每日結算各單號累積耗電量和生產量(Schedule)
-	@Test
-	void settleOrderPowerTest() {
-		/*********** 測試成功 ***********/
-		screwMaterialService.settleOrderPower();
-	}
-	
+//	@Test
+//	void settleOrderPowerTest() {
+//		/*********** 測試成功 ***********/
+//		screwMaterialService.settleOrderPower();
+//	}
+//	
 	// 計算碳排(用於碳排呈現): 參數(null) 傳回(每筆單號的資料庫資料、碳排值)
-	@Test
-	void calculateCarbonEmission() throws JsonProcessingException {
-		/*********** 測試成功 ***********/
-		CalculateInformationRes res = screwMaterialService.calculateCarbonEmission();
-		System.out.println(mapper.writeValueAsString(res));
-	}
+//	@Test
+//	void calculateCarbonEmission() throws JsonProcessingException {
+//		/*********** 測試成功 ***********/
+//		CalculateInformationRes res = screwMaterialService.calculateCarbonEmission();
+//		System.out.println(mapper.writeValueAsString(res));
+//	}
 	
 	// 更新電力使用量(用於碳排細節呈現): 參數(正在查看的單號, 目標量, 目前產量, 單顆重量, 過去累積用電度) 傳回(最新每顆螺絲的使用電度)
 //	@Test

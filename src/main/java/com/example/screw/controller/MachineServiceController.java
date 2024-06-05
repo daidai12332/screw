@@ -43,24 +43,24 @@ public class MachineServiceController {
 	
 	// 前台特定機台資料
 	// 取得特定機台一週的平均各項資料
-	@PostMapping(value = "screw/machineDataWeek")
-	public EquipmentRes machineDataWeek(@RequestParam(value = "name") String machineName) {
-		return machineService.machineDataWeek(machineName);
-	}
+//	@PostMapping(value = "screw/machineDataWeek")
+//	public EquipmentRes machineDataWeek(@RequestParam(value = "name") String machineName) {
+//		return machineService.machineDataWeek(machineName);
+//	}
 	
 	// 前台特定機台資料
 	// 取得機台一個月的平均各項資料
-	@PostMapping(value = "screw/machineDataMonth")
-	public EquipmentRes machineDataMonth(@RequestParam(value = "name") String machineName) {
-		return machineService.machineDataMonth(machineName);
-	}
+//	@PostMapping(value = "screw/machineDataMonth")
+//	public EquipmentRes machineDataMonth(@RequestParam(value = "name") String machineName) {
+//		return machineService.machineDataMonth(machineName);
+//	}
 	
 	// 前台特定機台資料
 	// 取得機台一年的平均各項資料
-	@PostMapping(value = "screw/machineDataYear")
-	public EquipmentRes machineDataYear(@RequestParam(value = "name") String machineName) {
-		return machineService.machineDataYear(machineName);
-	}
+//	@PostMapping(value = "screw/machineDataYear")
+//	public EquipmentRes machineDataYear(@RequestParam(value = "name") String machineName) {
+//		return machineService.machineDataYear(machineName);
+//	}
 	
 //	@PostMapping(value = "screw/getVoltage")
 //	public VoltageRes getVoltage() {

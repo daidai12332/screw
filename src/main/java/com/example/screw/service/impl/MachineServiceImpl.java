@@ -300,13 +300,13 @@ public class MachineServiceImpl implements MachineService{
 
 	@Override
 	public BaseRes addMachine(UpdateEquipmentReq req) {
-		LocalDate day = LocalDate.of(2020, 1, 1);
+		
 		int index = 0;
 		for( UpdateEquipment item : req.getUpdateEquipmentList()) {
 			if(!StringUtils.hasText(req.getUpdateEquipmentList().get(index).getName())) {
 				return new BaseRes(RtnCode.NEED_MACHINE_NAME.getCode(), RtnCode.NEED_MACHINE_NAME.getMessage());
 			}
-			machineDataDao.insertEquipmentData(item.getName(),day,item.getVoltage(),item.getType(),item.getPhone(),item.getLocation(),item.getWarrantyDate(),item.getPurchaseDate(),item.getRecord(), item.getEmail(), item.isStatus(), item.getPrice(), item.getLifespan(), item.getMaintenanceStaff(), item.getAddress());
+			machineDataDao.insertEquipmentData(item.getName(),item.getVoltage(),item.getType(),item.getPhone(),item.getLocation(),item.getWarrantyDate(),item.getPurchaseDate(),item.getRecord(), item.getEmail(), item.isStatus(), item.getPrice(), item.getLifespan(), item.getMaintenanceStaff(), item.getAddress());
 		}
 		return new BaseRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage());
 	}

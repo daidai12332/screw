@@ -28,26 +28,21 @@ CREATE TABLE IF NOT EXISTS `screw`.`order` (
 
 CREATE TABLE IF NOT EXISTS `screw`.`equipment` (
   `name` VARCHAR(20) NOT NULL,
-  `data_date` DATE NOT NULL,
-  `pass` INT DEFAULT 0,
   `voltage` INT DEFAULT 0,
   `type` VARCHAR(45) NOT NULL,
-  `data_run_avg` DOUBLE DEFAULT 0,
-  `data_idle_avg` DOUBLE DEFAULT 0,
-  `data_error_avg` DOUBLE DEFAULT 0,
-  `data_pass_avg` DOUBLE DEFAULT 0,
-  `data_current_avg` DOUBLE DEFAULT 0,
-  `run_it` DOUBLE DEFAULT 0,
-  `idle_it` DOUBLE DEFAULT 0,
-  `error_it` DOUBLE DEFAULT 0,
   `del` TINYINT DEFAULT '0',
   `phone` VARCHAR(45) DEFAULT '',
   `location` VARCHAR(100) DEFAULT '',
   `warranty_date` DATE NULL,
-  `spec` VARCHAR(200) DEFAULT '',
   `purchase_date` DATE NULL,
   `record` VARCHAR(200) DEFAULT '',
-  PRIMARY KEY (`name`, `data_date`)
+  `email` VARCHAR(200) DEFAULT '',
+  `status` TINYINT DEFAULT '1',
+  `price` INT DEFAULT 0,
+  `lifespan` DATE NULL,
+  `maintenance_staff` VARCHAR(45) DEFAULT '',
+  `address` VARCHAR(200) DEFAULT '',
+  PRIMARY KEY (`name`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE IF NOT EXISTS `account` (

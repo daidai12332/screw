@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.screw.service.ifs.OrderService;
 import com.example.screw.vo.BaseRes;
 import com.example.screw.vo.CalculateInformationRes;
+import com.example.screw.vo.OrderManagementRes;
 import com.example.screw.vo.OrderReq;
 import com.example.screw.vo.PowerUpdateReq;
 import com.example.screw.vo.PowerUpdateRes;
@@ -66,4 +67,10 @@ public class OrderServiceController {
 //	public PowerUpdateRes powerUpdate(@Valid @RequestBody PowerUpdateReq powerUpdateReq) {
 //		return orderService.powerUpdate(powerUpdateReq.getOrderNumber(), powerUpdateReq.getAim(), powerUpdateReq.getProduce(), powerUpdateReq.getWeight(), powerUpdateReq.getPowerUsage());	
 //	}
+	
+	// 取得所有單號的相關資訊
+	@PostMapping(value = "orderManagement/findOrderAll")
+	public OrderManagementRes findOrderAll() {
+		return orderService.findOrderAll();
+	}
 }

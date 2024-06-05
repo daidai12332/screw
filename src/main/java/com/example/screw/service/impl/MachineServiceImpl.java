@@ -431,6 +431,7 @@ public class MachineServiceImpl implements MachineService{
 					orderMachine.setAim(orderToday.get(i).getAim());
 					subNumber = orderMachine.getAim()-orderMachine.getPass();
 					addTime = (long)Math.ceil(subNumber/item.getNumber()*3.5);
+					orderMachine.setTotalTime(timeFormate(addTime));
 					orderMachine.setFinishTime(localDateTime.plusSeconds(addTime));
 					
 				}
@@ -442,6 +443,16 @@ public class MachineServiceImpl implements MachineService{
 		}
 		
 		return new OrderAndMachineRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), orderMachineList);
+	}
+	
+	private String timeFormate(long time) {
+		int days =  (int)Math.floor(time / 86400);
+		int hours = (int)Math.floor(time / 3600);
+		int minutes = (int)Math.floor(time / 60);
+		int seconds = (int)time % 60;
+		
+		return days + " day " + hours + " hr " + minutes + " min " + seconds + " sec ";
+		
 	}
 
 	

@@ -17,6 +17,8 @@ public class OrderAndMachine {
 	private LocalDateTime finishTime;
 	
 	private LocalDateTime updateTime;
+	
+	private String totalTime;
 
 	public OrderAndMachine() {
 		super();
@@ -24,7 +26,7 @@ public class OrderAndMachine {
 	}
 
 	public OrderAndMachine(String orderNumber, int aim, int pass, double passAvg, String type, LocalDateTime finishTime,
-			LocalDateTime updateTime) {
+			LocalDateTime updateTime, String totalTime) {
 		super();
 		this.orderNumber = orderNumber;
 		this.aim = aim;
@@ -33,6 +35,7 @@ public class OrderAndMachine {
 		this.type = type;
 		this.finishTime = finishTime;
 		this.updateTime = updateTime;
+		this.totalTime = totalTime;
 	}
 
 	public String getOrderNumber() {
@@ -89,6 +92,14 @@ public class OrderAndMachine {
 
 	public void setUpdateTime(LocalDateTime updateTime) {
 		this.updateTime = updateTime;
+	}
+
+	public String getTotalTime() {
+		return totalTime;
+	}
+
+	public void setTotalTime(String totalTime) {
+		this.totalTime = totalTime;
 	}
 	
 }

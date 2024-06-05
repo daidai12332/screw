@@ -21,10 +21,12 @@ import com.example.screw.constants.MaterialCarbonCoefficient;
 import com.example.screw.constants.RtnCode;
 import com.example.screw.entity.Order;
 import com.example.screw.repository.OrderDao;
+import com.example.screw.repository.OrderManagementDao;
 import com.example.screw.service.ifs.OrderService;
 import com.example.screw.vo.BaseRes;
 import com.example.screw.vo.CalculateInformationItem;
 import com.example.screw.vo.CalculateInformationRes;
+import com.example.screw.vo.OrderManagementRes;
 import com.example.screw.vo.PowerUpdateRes;
 import com.example.screw.vo.ProduceObj;
 import com.example.screw.vo.ScrewMaterialObj;
@@ -40,6 +42,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private OrderDao orderDao;
+	
+	@Autowired
+	private OrderManagementDao orderManagementDao;
 
 	private ObjectMapper mapper = new ObjectMapper();
 	
@@ -296,6 +301,12 @@ public class OrderServiceImpl implements OrderService {
 			calculateList.add(calculateInformationItem.getValue());
 		}
 		return new CalculateInformationRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), calculateList);
+	}
+
+	@Override
+	public OrderManagementRes findOrderAll() {
+		
+		return new OrderManagementRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), orderManagementDao.getAllOrder());
 	}
 
 	// 更新電力使用量(用於碳排細節呈現): 參數(正在查看的單號, 目標量, 目前產量, 單顆重量, 過去累積用電度) 傳回(最新每顆螺絲的使用電度)

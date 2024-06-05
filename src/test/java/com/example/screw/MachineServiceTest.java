@@ -1,5 +1,8 @@
 package com.example.screw;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -56,7 +59,8 @@ public class MachineServiceTest {
 //		List<ReceiveDataLong> data = machineDataDao.machineDataDay(tomorrow);
 //		System.out.println(objectMapper.writeValueAsString(data));
 
-		 machineService.machineDataHour();
+//		 machineService.machineDataHour();
+		
 
 	}
 	

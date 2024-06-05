@@ -66,4 +66,29 @@ CREATE TABLE IF NOT EXISTS `equipment_hour` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+CREATE TABLE IF NOT EXISTS `maintenance` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) DEFAULT '',
+  `time` datetime DEFAULT NULL,
+  `reason` VARCHAR(100) DEFAULT '',
+  `result` VARCHAR(200) DEFAULT '',
+  `note` VARCHAR(200) DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS `order_management` (
+  `order_number` varchar(20) NOT NULL,
+  `status` VARCHAR(45) DEFAULT '',
+  `item` VARCHAR(45) DEFAULT '',
+  `number` INT DEFAULT 0,
+  `purchaser_name` VARCHAR(45) DEFAULT '',
+  `purchaser_phone` VARCHAR(45) DEFAULT '',
+  `purchaser_address` VARCHAR(100) DEFAULT '',
+  `receiver_name` VARCHAR(45) DEFAULT '',
+  `receiver_phone` VARCHAR(45) DEFAULT '',
+  `receiver_address` VARCHAR(100) DEFAULT '',
+  `note` VARCHAR(200) DEFAULT '',
+  PRIMARY KEY (`order_number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 

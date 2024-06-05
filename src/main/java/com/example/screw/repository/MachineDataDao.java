@@ -56,7 +56,7 @@ public interface MachineDataDao extends JpaRepository<Equipment, EquipmentId>{
 	public List<ReceiveDataCurrent> machineErrorCurrentAvg();
 	
 	// 取得所有機台當前電壓
-	@Query(value = "SELECT new com.example.screw.vo.MachineVoltage(name,avg(voltage)as voltage) from Equipment group by name")
+	@Query(value = "SELECT new com.example.screw.vo.MachineVoltage(name,avg(voltage)as voltage) from Equipment group by name order by name")
 	public List<MachineVoltage> machineVoltage();
 	
 	// 取得特定機台一週的平均各項資料
@@ -77,19 +77,19 @@ public interface MachineDataDao extends JpaRepository<Equipment, EquipmentId>{
 	
 	//更新電壓
 	@Modifying
-	@Query(value = "UPDATE screw.equipment SET voltage = ?2, type = ?3, phone = ?4, location = ?5, warranty_date = ?6, spec = ?7, purchase_date = ?8, record = ?9 WHERE name = ?1", nativeQuery = true)
-	public void updateVoltage(String machineName, double voltage, String type, String phone, String location, LocalDate warrantyDate, String spec, LocalDate purchaseDate, String record);
+	@Query(value = "UPDATE screw.equipment SET voltage = ?2, type = ?3, phone = ?4, location = ?5, warranty_date = ?6, purchase_date = ?7, record = ?8, email = ?9, status = ?10, price = ?11, lifespan = ?12, maintenance_staff = ?13, address = ?14 WHERE name = ?1", nativeQuery = true)
+	public void updateMachine(String machineName, double voltage, String type, String phone, String location, LocalDate warrantyDate, LocalDate purchaseDate, String record, String email, boolean status, int price, LocalDate lifespan, String maintenanceStaff, String address);
 	
 	@Modifying
-	@Query(value = "INSERT INTO screw.equipment (name, data_date, voltage, type, phone, location, warranty_date, spec, purchase_date, record) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)", nativeQuery = true)
-	public void insertEquipmentData(String machineName,LocalDate dataDate, double voltage, String type, String phone, String location, LocalDate warrantyDate, String spec, LocalDate purchaseDate, String record);
+	@Query(value = "INSERT INTO screw.equipment (name, data_date, voltage, type, phone, location, warranty_date, purchase_date, record, email, status, price, lifespan, maintenance_staff, address) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15)", nativeQuery = true)
+	public void insertEquipmentData(String machineName,LocalDate dataDate, double voltage, String type, String phone, String location, LocalDate warrantyDate, LocalDate purchaseDate, String record, String email, boolean status, int price, LocalDate lifespan, String maintenanceStaff, String address);
 	
 	// 所有機台一期的總電度
 	@Query(value = "select new com.example.screw.vo.ElectricityPeriod(name, sum(runIT) as runIT, sum(idleIT) as idleIT, sum(errorIT) as errorIT) from Equipment where del = 'false' and  data_date >= ?1 group by name")
 	public List<ElectricityPeriod> machineITAll(LocalDate period);
 	
 	// 取得目前有的機台名稱(除了delete是true的)
-	@Query(value = "SELECT distinct new com.example.screw.vo.EquipmentName(name, voltage, type, phone, location, warrantyDate, spec, purchaseDate, record) from Equipment where del = 'false'")
+	@Query(value = "SELECT distinct new com.example.screw.vo.EquipmentName(name, voltage, type, phone, location, warrantyDate, purchaseDate, record, email, status, price, lifespan, maintenanceStaff, address) from Equipment where del = 'false' order by name")
 	public List<EquipmentName> machinesData();
 	
 	// 刪除設備

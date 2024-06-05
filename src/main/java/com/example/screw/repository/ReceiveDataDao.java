@@ -12,9 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.screw.entity.ReceiveData;
 import com.example.screw.vo.ReceiveDataLong;
-import com.example.screw.vo.ReceiveDataNew;
 import com.example.screw.vo.ReceiveDataOrder;
-import com.example.screw.vo.ReceivePassNumber;
 import com.example.screw.vo.ReceiveDataMachine;
 
 @Transactional
@@ -31,8 +29,12 @@ public interface ReceiveDataDao extends JpaRepository<ReceiveData, Integer>{
 	public List<ReceiveData> machineDataNow();
 	
 	// 取得每個機台最新的一個小時接收的資料
-	@Query(value = "select new com.example.screw.vo.ReceiveDataLong(name, sum(pass) as pass, avg(current) as current) from ReceiveData where time >= ?1 and time <= ?2 group by name")
+	@Query(value = "select new com.example.screw.vo.ReceiveDataLong(name, sum(pass) as pass, sum(ng) as ng, avg(current) as current, COUNT(CASE WHEN status = 'run' THEN 1 ELSE NULL END)as status ) from ReceiveData where time >= ?1 and time <= ?2 group by name order by name")
 	public List<ReceiveDataLong> machineDataHour(LocalDateTime start, LocalDateTime end);
+	
+	// 取得每個機台最新的一個小時總狀態次數
+	@Query(value = "select new com.example.screw.vo.ReceiveDataLong(name, COUNT(status)as status ) from ReceiveData where time >= ?1 and time <= ?2 group by name order by name")
+	public List<ReceiveDataLong> machineDataHourRun(LocalDateTime start, LocalDateTime end);
 	
 	// 取所有機台最新的資料
 	@Query(value = "select new com.example.screw.vo.ReceiveDataOrder(type, orderNumber, sum(pass) as pass, sum(ng) as ng, avg(pass) as number) from ReceiveData where  time <= ?1 group by type, orderNumber")

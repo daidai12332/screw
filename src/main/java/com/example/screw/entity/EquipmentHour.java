@@ -32,13 +32,20 @@ public class EquipmentHour {
 	
 	@Column(name = "type")
 	private String type;
+	
+	@Column(name = "run_avg")
+	private double runAvg;
+	
+	@Column(name = "pass_avg")
+	private double passAvg;
 
 	public EquipmentHour() {
 		super();
 		
 	}
 
-	public EquipmentHour(int id, String name, int pass, double power, LocalDateTime time, String type) {
+	public EquipmentHour(int id, String name, int pass, double power, LocalDateTime time, String type, double runAvg,
+			double passAvg) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -46,6 +53,8 @@ public class EquipmentHour {
 		this.power = power;
 		this.time = time;
 		this.type = type;
+		this.runAvg = runAvg;
+		this.passAvg = passAvg;
 	}
 
 	public int getId() {
@@ -95,5 +104,21 @@ public class EquipmentHour {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
+	public double getRunAvg() {
+		return runAvg;
+	}
+
+	public void setRunAvg(double runAvg) {
+		this.runAvg = runAvg;
+	}
+
+	public double getPassAvg() {
+		return passAvg;
+	}
+
+	public void setPassAvg(double passAvg) {
+		this.passAvg = passAvg;
+	}
+
 }

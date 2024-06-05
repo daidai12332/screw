@@ -6,11 +6,13 @@ public class ReceiveDataLong {
 	
 	private String name;
 	
-	private double current;
-	
 	private long pass;
 	
 	private long ng;
+	
+	private double current;
+	
+	private long status;
 
 	public ReceiveDataLong() {
 		super();
@@ -32,6 +34,21 @@ public class ReceiveDataLong {
 		this.pass = pass;
 		this.current = current;
 		
+	}
+
+	public ReceiveDataLong(String name, long status) {
+		super();
+		this.name = name;
+		this.status = status;
+	}
+
+	public ReceiveDataLong(String name, long pass, long ng, double current, long status) {
+		super();
+		this.name = name;
+		this.pass = pass;
+		this.ng = ng;
+		this.current = current;
+		this.status = status;
 	}
 
 	public String getName() {
@@ -64,6 +81,14 @@ public class ReceiveDataLong {
 
 	public void setNg(long ng) {
 		this.ng = ng;
+	}
+
+	public long getStatus() {
+		return status;
+	}
+
+	public void setStatus(long status) {
+		this.status = status;
 	}
 	
 }

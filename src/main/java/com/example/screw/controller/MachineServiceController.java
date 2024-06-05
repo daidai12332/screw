@@ -15,9 +15,14 @@ import com.example.screw.vo.ElectricityRes;
 import com.example.screw.vo.EquipmentHourRes;
 import com.example.screw.vo.EquipmentHoursDayRes;
 import com.example.screw.vo.EquipmentRes;
+import com.example.screw.vo.EquipmentWeekRes;
 import com.example.screw.vo.MachineNameReq;
 import com.example.screw.vo.MachineNameRes;
+import com.example.screw.vo.MaintenanceRes;
 import com.example.screw.vo.OrderAndMachineRes;
+import com.example.screw.vo.RecordDeleteReq;
+import com.example.screw.vo.RecordReq;
+import com.example.screw.vo.RecordStatisticsRes;
 import com.example.screw.vo.StatusAndOrderRes;
 import com.example.screw.vo.UpdateEquipmentReq;
 import com.example.screw.vo.VoltageRes;
@@ -114,5 +119,54 @@ public class MachineServiceController {
 	@PostMapping(value = "screw/orderDataDay")
 	public  OrderAndMachineRes orderDataDay() {
 		return machineService.orderDataDay();
+	}
+	
+	// 後台
+	///特定機台每小時資料
+	@PostMapping(value = "screw/machineDayData")
+	public EquipmentHourRes machineDayData(@RequestParam(value = "name") String machineName) {
+			return machineService.machineDayData(machineName);
+	}
+	
+	// 後台
+	//特定機台週平均資料
+	@PostMapping(value = "screw/machineWeekAvg")
+	public EquipmentWeekRes machineWeekAvg(@RequestParam(value = "name") String machineName) {
+			return machineService.machineWeekAvg(machineName);
+	}
+	
+	// 後台
+	//特定機台維修資料
+	@PostMapping(value = "screw/equipmentRecord")
+	public MaintenanceRes equipmentRecord(@RequestParam(value = "name") String machineName) {
+			return machineService.equipmentRecord(machineName);
+	}
+	
+	// 後台
+	//特定機台維修資料統計
+	@PostMapping(value = "screw/recordStatistics")
+	public RecordStatisticsRes recordStatistics(@RequestParam(value = "name") String machineName) {
+			return machineService.recordStatistics(machineName);
+	}
+	
+	// 後台
+	//新增維修資料
+	@PostMapping(value = "screw/addRecord")
+	public BaseRes addRecord(@RequestBody RecordReq req) {
+			return machineService.addRecord(req);
+	}
+	
+	// 後台
+	//更新維修資料
+	@PostMapping(value = "screw/updateRecord")
+	public BaseRes updateRecord(@RequestBody RecordReq req) {
+			return machineService.updateRecord(req);
+	}
+	
+	// 後台
+	//刪除維修資料
+	@PostMapping(value = "screw/deleteRecord")
+	public BaseRes deleteRecord(@RequestBody RecordDeleteReq req) {
+			return machineService.deleteRecord(req);
 	}
 }

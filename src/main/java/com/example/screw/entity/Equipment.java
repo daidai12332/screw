@@ -27,13 +27,13 @@ public class Equipment {
 	@Column(name = "pass")
 	private int pass;       			// 生產數量
 	
+	@NotNull(message = "電壓不能為空")
 	@Column(name = "voltage")
 	private int voltage;       			// 設備電壓
 	
 	@Column(name = "type")
 	private String type;       			// 設備類型
 
-	@NotNull(message = "電壓不能為空")
 	@Column(name = "data_run_avg")
 	private double dataRunAvg;           // 狀態run比例平均
 	
@@ -70,23 +70,39 @@ public class Equipment {
 	@Column(name = "warranty_date")		//保固日期
 	private LocalDate warrantyDate;
 	
-	@Column(name = "spec")		//規格
-	private String spec;
-	
 	@Column(name = "purchase_date")		//購買日期
 	private LocalDate purchaseDate;
 	
-	@Column(name = "record")		//維修紀錄
+	@Column(name = "record")		//備註
 	private String record;
+	
+	@Column(name = "email")		//電郵
+	private String email;
+	
+	@Column(name = "status")		//使用狀態
+	private boolean status;
+	
+	@Column(name = "price")    //價格
+	private int price;     
+	
+	@Column(name = "lifespan")		//使用年限
+	private LocalDate lifespan;
+	
+	@Column(name = "maintenance_staff")		//維修人員姓名
+	private String maintenanceStaff;
+	
+	@Column(name = "address")		//地址
+	private String address;
 	
 	public Equipment() {
 		super();
 	}
 
-	public Equipment(@NotBlank(message = "設備名稱不能為空") String name, LocalDate dataDate, int pass, int voltage,
-			String type, @NotNull(message = "電壓不能為空") double dataRunAvg, double dataIdleAvg, double dataErrorAvg,
-			double dataPassAvg, double dataCurrentAvg, double runIT, double idleIT, double errorIT, boolean del,
-			String phone, String location, LocalDate warrantyDate, String spec, LocalDate purchaseDate, String record) {
+	public Equipment(@NotBlank(message = "設備名稱不能為空") String name, LocalDate dataDate, int pass,
+			@NotNull(message = "電壓不能為空") int voltage, String type, double dataRunAvg, double dataIdleAvg,
+			double dataErrorAvg, double dataPassAvg, double dataCurrentAvg, double runIT, double idleIT, double errorIT,
+			boolean del, String phone, String location, LocalDate warrantyDate, LocalDate purchaseDate, String record,
+			String email, boolean status, int price, LocalDate lifespan, String maintenanceStaff, String address) {
 		super();
 		this.name = name;
 		this.dataDate = dataDate;
@@ -105,9 +121,14 @@ public class Equipment {
 		this.phone = phone;
 		this.location = location;
 		this.warrantyDate = warrantyDate;
-		this.spec = spec;
 		this.purchaseDate = purchaseDate;
 		this.record = record;
+		this.email = email;
+		this.status = status;
+		this.price = price;
+		this.lifespan = lifespan;
+		this.maintenanceStaff = maintenanceStaff;
+		this.address = address;
 	}
 
 	public String getName() {
@@ -246,14 +267,6 @@ public class Equipment {
 		this.warrantyDate = warrantyDate;
 	}
 
-	public String getSpec() {
-		return spec;
-	}
-
-	public void setSpec(String spec) {
-		this.spec = spec;
-	}
-
 	public LocalDate getPurchaseDate() {
 		return purchaseDate;
 	}
@@ -269,5 +282,53 @@ public class Equipment {
 	public void setRecord(String record) {
 		this.record = record;
 	}
-	
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+	public LocalDate getLifespan() {
+		return lifespan;
+	}
+
+	public void setLifespan(LocalDate lifespan) {
+		this.lifespan = lifespan;
+	}
+
+	public String getMaintenanceStaff() {
+		return maintenanceStaff;
+	}
+
+	public void setMaintenanceStaff(String maintenanceStaff) {
+		this.maintenanceStaff = maintenanceStaff;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 }

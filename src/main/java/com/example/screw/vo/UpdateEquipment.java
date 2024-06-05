@@ -16,18 +16,29 @@ public class UpdateEquipment {
 	
 	private LocalDate warrantyDate;
 	
-	private String spec;
-	
 	private LocalDate purchaseDate;
 	
 	private String record;
+	
+	private String email;
+	
+	private boolean status;
+	
+	private int price;     
+	
+	private LocalDate lifespan;
+	
+	private String maintenanceStaff;
+	
+	private String address;
 
 	public UpdateEquipment() {
 		super();
 	}
 
 	public UpdateEquipment(String name, int voltage, String type, String phone, String location, LocalDate warrantyDate,
-			String spec, LocalDate purchaseDate, String record) {
+			LocalDate purchaseDate, String record, String email, boolean status, int price, LocalDate lifespan,
+			String maintenanceStaff, String address) {
 		super();
 		this.name = name;
 		this.voltage = voltage;
@@ -35,9 +46,14 @@ public class UpdateEquipment {
 		this.phone = phone;
 		this.location = location;
 		this.warrantyDate = warrantyDate;
-		this.spec = spec;
 		this.purchaseDate = purchaseDate;
 		this.record = record;
+		this.email = email;
+		this.status = status;
+		this.price = price;
+		this.lifespan = lifespan;
+		this.maintenanceStaff = maintenanceStaff;
+		this.address = address;
 	}
 
 	public String getName() {
@@ -88,14 +104,6 @@ public class UpdateEquipment {
 		this.warrantyDate = warrantyDate;
 	}
 
-	public String getSpec() {
-		return spec;
-	}
-
-	public void setSpec(String spec) {
-		this.spec = spec;
-	}
-
 	public LocalDate getPurchaseDate() {
 		return purchaseDate;
 	}
@@ -111,7 +119,53 @@ public class UpdateEquipment {
 	public void setRecord(String record) {
 		this.record = record;
 	}
-	
-	
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+	public LocalDate getLifespan() {
+		return lifespan;
+	}
+
+	public void setLifespan(LocalDate lifespan) {
+		this.lifespan = lifespan;
+	}
+
+	public String getMaintenanceStaff() {
+		return maintenanceStaff;
+	}
+
+	public void setMaintenanceStaff(String maintenanceStaff) {
+		this.maintenanceStaff = maintenanceStaff;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
 }

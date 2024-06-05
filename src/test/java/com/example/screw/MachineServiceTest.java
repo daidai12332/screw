@@ -56,7 +56,7 @@ public class MachineServiceTest {
 //		List<ReceiveDataLong> data = machineDataDao.machineDataDay(tomorrow);
 //		System.out.println(objectMapper.writeValueAsString(data));
 
-		 machineService.machineDataDay();
+		 machineService.machineDataHour();
 
 	}
 	

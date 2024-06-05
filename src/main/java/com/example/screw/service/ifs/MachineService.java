@@ -11,9 +11,14 @@ import com.example.screw.vo.ElectricityRes;
 import com.example.screw.vo.EquipmentHourRes;
 import com.example.screw.vo.EquipmentHoursDayRes;
 import com.example.screw.vo.EquipmentRes;
+import com.example.screw.vo.EquipmentWeekRes;
 import com.example.screw.vo.MachineNameReq;
 import com.example.screw.vo.MachineNameRes;
+import com.example.screw.vo.MaintenanceRes;
 import com.example.screw.vo.OrderAndMachineRes;
+import com.example.screw.vo.RecordDeleteReq;
+import com.example.screw.vo.RecordReq;
+import com.example.screw.vo.RecordStatisticsRes;
 import com.example.screw.vo.StatusAndOrderRes;
 import com.example.screw.vo.UpdateEquipmentReq;
 import com.example.screw.vo.VoltageRes;
@@ -21,8 +26,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 public interface MachineService {
 	
-	// 儲存機台一天平均的資料
-	public void machineDataDay ();
+//	// 儲存機台一天平均的資料
+//	public void machineDataDay ();
 	
 	// 首頁
 	// 取所有機台的最新資料
@@ -73,6 +78,27 @@ public interface MachineService {
 	// 首頁之前的幾個小時累積的資料
 	//取得今日不同類型機台各項資料
 	public EquipmentHoursDayRes machineHoursData();
+	
+	//特定機台每小時資料
+	public EquipmentHourRes machineDayData(String name);
+	
+	//特定機台週平均資料
+	public EquipmentWeekRes machineWeekAvg(String name);
+	
+	//特定機台維修資料
+	public MaintenanceRes equipmentRecord(String name);
+	
+	//特定機台維修資料統計
+	public RecordStatisticsRes recordStatistics(String name);
+	
+	// 新增維修資料
+	public BaseRes addRecord(RecordReq req);
+	
+	// 更新維修資料
+	public BaseRes updateRecord(RecordReq req);
+	
+	// 刪除維修資料
+	public BaseRes deleteRecord(RecordDeleteReq req);
 	
 	// 首頁 單號
 	//取得今日有生產之單號的產量與機台等各項資料

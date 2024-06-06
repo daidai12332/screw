@@ -5,6 +5,7 @@ public enum RtnCode {
 
 	VOLTAGE_CANNOT_BE_ZERO(400, "Voltage can not be zero"),//
 	MACHINE_NAME_CANNOT_BE_NULL(400, "Machine name can not be null"),
+	ORDER_NAME_CANNOT_BE_NULL(400, "Order name can not be null"),
 	PASSWORD_ERROR(400, "密碼錯誤"), //
 	ACCOUNT_NOT_EXISTS(400, "帳號不存在"), //
 	NO_DATA(400, "查無資料"), //

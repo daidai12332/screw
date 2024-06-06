@@ -41,9 +41,8 @@ public class Maintenance {
 		
 	}
 
-	public Maintenance(int id, String name, LocalDateTime time, String reason, String result, String note) {
+	public Maintenance(String name, LocalDateTime time, String reason, String result, String note) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.time = time;
 		this.reason = reason;

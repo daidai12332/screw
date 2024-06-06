@@ -17,50 +17,56 @@ public class Equipment {
 	@Id
 	@NotBlank(message = "設備名稱不能為空")
 	@Column(name = "name")
-	private String name;              // 設備編號 或 電壓
+	private String name;              // 設備編號
 	
+	@Column(name = "status")
+	private boolean status;	    	// 使用狀態
+
+	@Column(name = "type")
+	private String type;       			// 設備類型
+
 	@NotNull(message = "電壓不能為空")
 	@Column(name = "voltage")
 	private int voltage;       			// 設備電壓
-	
-	@Column(name = "type")
-	private String type;       			// 設備類型
-	
+
 	@Column(name = "del")		//設備是否被刪除
 	private boolean del;
 	
-	@Column(name = "phone")		//維修電話
-	private String phone;
-	
-	@Column(name = "location")		//購買地點
-	private String location;
-	
-	@Column(name = "warranty_date")		//保固日期
-	private LocalDate warrantyDate;
+	//
 	
 	@Column(name = "purchase_date")		//購買日期
 	private LocalDate purchaseDate;
-	
-	@Column(name = "record")		//備註
-	private String record;
-	
-	@Column(name = "email")		//電郵
-	private String email;
-	
-	@Column(name = "status")		//使用狀態
-	private boolean status;
+
+	@Column(name = "location")		//購買地點
+	private String location;
 	
 	@Column(name = "price")    //價格
 	private int price;     
-	
+
+	@Column(name = "warranty_date")		//保固日期
+	private LocalDate warrantyDate;
+		
 	@Column(name = "lifespan")		//使用年限
 	private LocalDate lifespan;
+	
+	//
 	
 	@Column(name = "maintenance_staff")		//維修人員姓名
 	private String maintenanceStaff;
 	
+	@Column(name = "phone")		//維修電話
+	private String phone;
+		
+	@Column(name = "email")		//電郵
+	private String email;
+		
 	@Column(name = "address")		//地址
 	private String address;
+	
+	//
+	
+	@Column(name = "record")		//備註
+	private String record;	
 	
 	public Equipment() {
 		super();

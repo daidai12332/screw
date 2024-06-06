@@ -13,17 +13,20 @@ CREATE TABLE IF NOT EXISTS `screw`.`receive_data` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE IF NOT EXISTS `screw`.`order` (
-  `order_number` varchar(20) NOT NULL DEFAULT 0,
-  `name` VARCHAR(100) NULL,
-  `aim` INT NOT NULL DEFAULT 0,
-  `produce` int DEFAULT '0',
-  `weight` INT NOT NULL DEFAULT 0,
-  `raw` MEDIUMTEXT NOT NULL,
-  `process` MEDIUMTEXT,
-  `del` TINYINT DEFAULT '0',
+CREATE TABLE IF NOT EXISTS `order` (
+  `order_number` varchar(20) NOT NULL DEFAULT '0',
+  `aim` int NOT NULL DEFAULT '0',
+  `weight` int NOT NULL DEFAULT '0',
+  `startProcessIndex` int NOT NULL DEFAULT '0',
+  `endProcessIndex` int NOT NULL DEFAULT '0',
+  `pullThread` mediumtext,
+  `forming` mediumtext,
+  `grindTeeth` mediumtext,
+  `heatTreatment` mediumtext,
+  `electroplating` mediumtext,
+  `del` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`order_number`)
-  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
 CREATE TABLE IF NOT EXISTS `screw`.`equipment` (
@@ -58,6 +61,8 @@ CREATE TABLE IF NOT EXISTS `equipment_hour` (
   `power` DOUBLE DEFAULT 0,
   `time` datetime DEFAULT NULL,
   `type` VARCHAR(45) NOT NULL,
+  `run_avg` DOUBLE DEFAULT 0,
+  `pass_avg` DOUBLE DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 

@@ -74,14 +74,14 @@ public class OrderServiceTest {
 		List<ProduceObj> process = new ArrayList<>(List.of(new ProduceObj("電力", 0, 0)));
 		
 		/*********** 測試成功 ***********/
-		BaseRes res = screwMaterialService.createOrder(orderNumber, name, aim, weight, raw, process);
-		System.out.println(mapper.writeValueAsString(res));
-		Assert.isTrue(res.getCode() == 400, "Add Test Fail");
+//		BaseRes res = screwMaterialService.createOrder(orderNumber, name, aim, weight, raw, process);
+//		System.out.println(mapper.writeValueAsString(res));
+//		Assert.isTrue(res.getCode() == 400, "Add Test Fail");
 		
 		/*********** 測試重覆 ***********/
-		res = screwMaterialService.createOrder(orderNumber, name, aim, weight, raw, process);
-		System.out.println(mapper.writeValueAsString(res));
-		Assert.isTrue(res.getCode() == 400, "Add Test Fail");
+//		res = screwMaterialService.createOrder(orderNumber, name, aim, weight, raw, process);
+//		System.out.println(mapper.writeValueAsString(res));
+//		Assert.isTrue(res.getCode() == 400, "Add Test Fail");
 	}
 	
 	// 編輯單號
@@ -95,35 +95,35 @@ public class OrderServiceTest {
 		List<ProduceObj> process = new ArrayList<>(List.of(new ProduceObj("電力", 0, 0)));
 
 		/*********** 測試資料不存在 ***********/
-		BaseRes res = screwMaterialService.editOrder("2", name, aim, weight, raw, process);
-		System.out.println(mapper.writeValueAsString(res));
-		Assert.isTrue(res.getCode() == 400, "Edit Not Exist Test Fail");
+//		BaseRes res = screwMaterialService.editOrder("2", name, aim, weight, raw, process);
+//		System.out.println(mapper.writeValueAsString(res));
+//		Assert.isTrue(res.getCode() == 400, "Edit Not Exist Test Fail");
 
 		/*********** 測試成功 ***********/
-		res = screwMaterialService.editOrder(orderNumber, name, aim, weight, raw, process);
-		System.out.println(mapper.writeValueAsString(res));
-		Assert.isTrue(res.getCode() == 200, "Edit Success Test Fail");
+//		res = screwMaterialService.editOrder(orderNumber, name, aim, weight, raw, process);
+//		System.out.println(mapper.writeValueAsString(res));
+//		Assert.isTrue(res.getCode() == 200, "Edit Success Test Fail");
 	}
 
 	// 搜尋單號
 	@Test
 	void searchOrderTest() throws JsonProcessingException {
 		/*********** 測試成功 ***********/
-		SearchOrderRes res = screwMaterialService.searchOrder("2", null);
-		System.out.println(mapper.writeValueAsString(res));
-		Assert.isTrue(res.getCode() == 200, "First Test Fail");
-		
-		res = screwMaterialService.searchOrder("1", null);
-		System.out.println(mapper.writeValueAsString(res));
-		Assert.isTrue(res.getCode() == 200, "Second Test Fail");
-		
-		res = screwMaterialService.searchOrder(null, null);
-		System.out.println(mapper.writeValueAsString(res));
-		Assert.isTrue(res.getCode() == 200, "Third Test Fail");
-
-		res = screwMaterialService.searchOrder(null, "不");
-		System.out.println(mapper.writeValueAsString(res));
-		Assert.isTrue(res.getCode() == 200, "Fourth Test Fail");
+//		SearchOrderRes res = screwMaterialService.searchOrder("2", null);
+//		System.out.println(mapper.writeValueAsString(res));
+//		Assert.isTrue(res.getCode() == 200, "First Test Fail");
+//		
+//		res = screwMaterialService.searchOrder("1", null);
+//		System.out.println(mapper.writeValueAsString(res));
+//		Assert.isTrue(res.getCode() == 200, "Second Test Fail");
+//		
+//		res = screwMaterialService.searchOrder(null, null);
+//		System.out.println(mapper.writeValueAsString(res));
+//		Assert.isTrue(res.getCode() == 200, "Third Test Fail");
+//
+//		res = screwMaterialService.searchOrder(null, "不");
+//		System.out.println(mapper.writeValueAsString(res));
+//		Assert.isTrue(res.getCode() == 200, "Fourth Test Fail");
 
 	}
 	

@@ -17,15 +17,15 @@ import com.example.screw.vo.SettleOrderVo;
 @Transactional
 public interface OrderDao extends JpaRepository<Order, Integer> {
 	
-	// 插入新的螺絲訂單
+	// 建立螺絲訂單
 	@Modifying
-	@Query(value = "INSERT IGNORE INTO screw.order (order_number, name, aim, weight, raw, process) VALUES (?1, ?2, ?3, ?4, ?5, ?6)", nativeQuery = true)
-	public int insertOrder(String orderNumber, String name, int aim, int weight, String raw, String process);
+	@Query(value = "INSERT IGNORE INTO screw.order (order_number, aim, weight, start_process_index, end_process_index, pull_thread, forming, grind_teeth, heat_treatment, electroplating) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)", nativeQuery = true)
+	public int insertOrder(String orderNumber, int aim, int weight, int startProcessIndex, int endProcessIndex, String pullThread, String forming, String grindTeeth, String heatTreatment, String electroplating);
 
 	// 更新螺絲訂單
 	@Modifying
-	@Query(value = "UPDATE screw.order SET name = ?2, aim = ?3, weight = ?4, raw = ?5, process = ?6 WHERE order_number = ?1", nativeQuery = true)
-	public int updateOrder(String orderNumber, String name, int aim, int weight, String raw, String process);
+	@Query(value = "UPDATE screw.order SET aim = ?2, weight = ?3, start_process_index = ?4, end_process_index = ?5, pull_thread = ?6, forming = ?7, grind_teeth = ?8, heat_treatment = ?9, electroplating = ?10 WHERE order_number = ?1", nativeQuery = true)
+	public int updateOrder(String orderNumber, int aim, int weight, int startProcessIndex, int endProcessIndex, String pullThread, String forming, String grindTeeth, String heatTreatment, String electroplating);
 
 	// 刪除螺絲訂單
 	@Modifying
@@ -33,8 +33,8 @@ public interface OrderDao extends JpaRepository<Order, Integer> {
 	public int deleteOrder(String orderNumber);
 
 	// 搜尋螺絲訂單
-	@Query(value = "SELECT * FROM screw.order WHERE order_number LIKE %?1% AND name LIKE %?2% AND `del`=false", nativeQuery = true)
-	public List<Order> searchOrder(String orderNumber, String name);
+	@Query(value = "SELECT * FROM screw.order WHERE order_number = ?1 AND `del`=false", nativeQuery = true)
+	public Order searchOrder(String orderNumber);
 
 	// 根據單號分類，將日期 >= settleStart 且 日期 <= settleEnd 的 電度算出來 和 pass加總，回傳[{單號,電流總和,產量總和}]
 	// 總電度 = 伏特*電流面積總和/運作秒數/1000*運作小時

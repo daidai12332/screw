@@ -12,16 +12,16 @@ import com.example.screw.vo.SearchOrderRes;
 public interface OrderService {
 
 	// 新增單號
-	public BaseRes createOrder(String orderNumber, String name, int aim, int weight, List<ProduceObj> raw, List<ProduceObj> process);
+	public BaseRes createOrder(String orderNumber, int aim, int weight, int startProcessIndex, int endProcessIndex, String pullThread, String forming, String grindTeeth, String heatTreatment, String electroplating);
 
 	// 編輯單號
-	public BaseRes editOrder(String orderNumber, String name, int aim, int weight, List<ProduceObj> raw, List<ProduceObj> process);
+	public BaseRes editOrder(String orderNumber, int aim, int weight, int startProcessIndex, int endProcessIndex, String pullThread, String forming, String grindTeeth, String heatTreatment, String electroplating);
 
 	// 刪除單號
 	public BaseRes deleteOrder(String orderNumber);
 	
-	// 搜尋單號
-	public SearchOrderRes searchOrder(String orderNumber, String name);
+	// 取得資料庫中所有單號的製造資訊
+	public SearchOrderRes getOrderManufactureByOrderNumber(String orderNumber);
 
 	// 每日結算各單號累積耗電量和生產量(Schedule)
 //	public void settleOrderPower();

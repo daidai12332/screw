@@ -1,6 +1,6 @@
 package com.example.screw.vo;
 
-import java.util.List;
+import com.example.screw.entity.Order;
 
 public class SearchOrderRes {
 
@@ -8,17 +8,17 @@ public class SearchOrderRes {
 
 	private String message;
 	
-	private List<ScrewMaterialObj> screwMaterialList;
+	private Order orderManufacture;
 
 	public SearchOrderRes() {
 		super();
 	}
 
-	public SearchOrderRes(int code, String message, List<ScrewMaterialObj> screwMaterialList) {
+	public SearchOrderRes(int code, String message, Order orderManufacture) {
 		super();
 		this.code = code;
 		this.message = message;
-		this.screwMaterialList = screwMaterialList;
+		this.orderManufacture = orderManufacture;
 	}
 
 	public int getCode() {
@@ -37,12 +37,12 @@ public class SearchOrderRes {
 		this.message = message;
 	}
 
-	public List<ScrewMaterialObj> getScrewMaterialList() {
-		return screwMaterialList;
+	public Order getOrderManufacture() {
+		return orderManufacture;
 	}
 
-	public void setScrewMaterialList(List<ScrewMaterialObj> screwMaterialList) {
-		this.screwMaterialList = screwMaterialList;
+	public void setOrderManufacture(Order orderManufacture) {
+		this.orderManufacture = orderManufacture;
 	}
-	
+
 }

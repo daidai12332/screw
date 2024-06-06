@@ -185,7 +185,7 @@ public class MachineServiceImpl implements MachineService{
 		}
 		
 		
-		return new StatusAndOrderRes(RtnCode.RECIVEDATA_ERROR.getCode(),RtnCode.RECIVEDATA_ERROR.getMessage());
+		return new StatusAndOrderRes(RtnCode.SUCCESS.getCode(),RtnCode.SUCCESS.getMessage(),datas);
 	}
 	
 	@Override
@@ -313,7 +313,7 @@ public class MachineServiceImpl implements MachineService{
 
 	
 	@Override
-	@Scheduled(cron = "0 0 * * * ?")
+//	@Scheduled(cron = "0 0 * * * ?")
 	public void machineDataHour() {
 		EquipmentHour equh = new EquipmentHour();
 		LocalDateTime localDateTime = LocalDateTime.now();
@@ -451,7 +451,7 @@ public class MachineServiceImpl implements MachineService{
 		int minutes = (int)Math.floor(time / 60);
 		int seconds = (int)time % 60;
 		
-		return days + " day " + hours + " hr " + minutes + " min " + seconds + " sec ";
+		return days + " ¤Ñ " + hours + " ®É " + minutes + " ¤À " + seconds + " ¬í ";
 		
 	}
 
@@ -477,7 +477,7 @@ public class MachineServiceImpl implements MachineService{
 		if(!StringUtils.hasText(name)) {
 			return new EquipmentWeekRes(RtnCode.NEED_MACHINE_NAME.getCode(), RtnCode.NEED_MACHINE_NAME.getMessage());
 		}
-		return new EquipmentWeekRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), equipmentHourDao.getEquipmentWeekData(start, end, name));
+		return new EquipmentWeekRes(RtnCode.SUCCESS.getCode(), RtnCode.SUCCESS.getMessage(), start, end, equipmentHourDao.getEquipmentWeekData(start, end, name));
 	}
 
 	

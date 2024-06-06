@@ -2,14 +2,12 @@ package com.example.screw.controller;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.screw.constants.RtnCode;
@@ -18,11 +16,6 @@ import com.example.screw.service.ifs.MachineService;
 import com.example.screw.service.ifs.MemberService;
 import com.example.screw.service.ifs.OrderService;
 import com.example.screw.vo.BaseRes;
-import com.example.screw.vo.MachineNameReq;
-import com.example.screw.vo.MachineNameRes;
-import com.example.screw.vo.OrderReq;
-import com.example.screw.vo.SearchOrderRes;
-import com.example.screw.vo.SearchReq;
 
 @CrossOrigin
 @RestController

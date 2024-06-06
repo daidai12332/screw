@@ -16,25 +16,38 @@ public class Order {
 	@Column(name = "order_number")
 	private String orderNumber; // 單號作為 pk，假設一張單號為一種螺絲
 
-	@Column(name = "name")
-	private String name; // 使用者自行取的名稱
-
-	@Min(value = 1, message = "訂購數量需至少為 {value} 顆")
+	@Min(value = 1, message = "目標生產量需至少為 {value} 顆")
 	@Column(name = "aim")
-	private int aim; // 訂購的螺絲總量
-
-	@Column(name = "produce")
-	private int produce; // 已生產的螺絲數量
-
+	private int aim; // 單顆螺絲的重量(g)	
+	
 	@Min(value = 1, message = "單顆產品重量需至少為 {value} 克")
 	@Column(name = "weight")
 	private int weight; // 單顆螺絲的重量(g)
 
-	@Column(name = "raw")
-	private String raw; // List<ProduceObj> 轉成 string = [{原料名稱 + 用量 + 碳排放係數},{}]
+	@Min(value = 0, message = "製造的起點至少須為抽線")
+	@Min(value = 4, message = "製造的起點至少須為電鍍")
+	@Column(name = "start_process_index")
+	private int startProcessIndex;    // 製造的起點
+	
+	@Min(value = 0, message = "製造的終點至少須為抽線")
+	@Min(value = 4, message = "製造的起點至少須為電鍍")
+	@Column(name = "end_process_index")
+	private int endProcessIndex;      // 製造的終點
+	
+	@Column(name = "pull_thread")
+	private String pullThreadString;  // 抽線(0)
+	
+	@Column(name = "forming")
+	private String formingString;     // 鍛造成型(1)
+	
+	@Column(name = "grind_teeth")
+	private String grindTeethString;     // 輾牙(2)
 
-	@Column(name = "process")
-	private String process; // List<ProduceObj> 轉成 string = [{使用物/排放物 + 使用量/排放量 + 碳排放係數},{}]
+	@Column(name = "heat_treatment")
+	private String heatTreatmentString;  // 熱處理(3)
+
+	@Column(name = "electroplating")
+	private String electroplatingString; // 電鍍(4)
 
 	@Column(name = "del")
 	private boolean del;
@@ -42,14 +55,26 @@ public class Order {
 	public Order() {
 		super();
 	}
-
-	public Order(String orderNumber, String name, int weight, String raw, String process) {
+	
+	public Order(@NotBlank(message = "單號不能為空") String orderNumber,
+			@Min(value = 1, message = "目標生產量需至少為 {value} 顆") int aim,
+			@Min(value = 1, message = "單顆產品重量需至少為 {value} 克") int weight,
+			@Min(value = 0, message = "製造的起點至少須為抽線") @Min(value = 4, message = "製造的起點至少須為電鍍") int startProcessIndex,
+			@Min(value = 0, message = "製造的終點至少須為抽線") @Min(value = 4, message = "製造的起點至少須為電鍍") int endProcessIndex,
+			String pullThreadString, String formingString, String grindTeethString, String heatTreatmentString,
+			String electroplatingString, boolean del) {
 		super();
 		this.orderNumber = orderNumber;
-		this.name = name;
+		this.aim = aim;
 		this.weight = weight;
-		this.raw = raw;
-		this.process = process;
+		this.startProcessIndex = startProcessIndex;
+		this.endProcessIndex = endProcessIndex;
+		this.pullThreadString = pullThreadString;
+		this.formingString = formingString;
+		this.grindTeethString = grindTeethString;
+		this.heatTreatmentString = heatTreatmentString;
+		this.electroplatingString = electroplatingString;
+		this.del = del;
 	}
 
 	public String getOrderNumber() {
@@ -59,29 +84,13 @@ public class Order {
 	public void setOrderNumber(String orderNumber) {
 		this.orderNumber = orderNumber;
 	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
+	
 	public int getAim() {
 		return aim;
 	}
 
 	public void setAim(int aim) {
 		this.aim = aim;
-	}
-
-	public int getProduce() {
-		return produce;
-	}
-
-	public void setProduce(int produce) {
-		this.produce = produce;
 	}
 
 	public int getWeight() {
@@ -92,20 +101,60 @@ public class Order {
 		this.weight = weight;
 	}
 
-	public String getRaw() {
-		return raw;
+	public int getStartProcessIndex() {
+		return startProcessIndex;
 	}
 
-	public void setRaw(String raw) {
-		this.raw = raw;
+	public void setStartProcessIndex(int startProcessIndex) {
+		this.startProcessIndex = startProcessIndex;
 	}
 
-	public String getProcess() {
-		return process;
+	public int getEndProcessIndex() {
+		return endProcessIndex;
 	}
 
-	public void setProcess(String process) {
-		this.process = process;
+	public void setEndProcessIndex(int endProcessIndex) {
+		this.endProcessIndex = endProcessIndex;
+	}
+
+	public String getPullThreadString() {
+		return pullThreadString;
+	}
+
+	public void setPullThreadString(String pullThreadString) {
+		this.pullThreadString = pullThreadString;
+	}
+
+	public String getFormingString() {
+		return formingString;
+	}
+
+	public void setFormingString(String formingString) {
+		this.formingString = formingString;
+	}
+
+	public String getGrindTeethString() {
+		return grindTeethString;
+	}
+
+	public void setGrindTeethString(String grindTeethString) {
+		this.grindTeethString = grindTeethString;
+	}
+
+	public String getHeatTreatmentString() {
+		return heatTreatmentString;
+	}
+
+	public void setHeatTreatmentString(String heatTreatmentString) {
+		this.heatTreatmentString = heatTreatmentString;
+	}
+
+	public String getElectroplatingString() {
+		return electroplatingString;
+	}
+
+	public void setElectroplatingString(String electroplatingString) {
+		this.electroplatingString = electroplatingString;
 	}
 
 	public boolean isDel() {
@@ -115,5 +164,5 @@ public class Order {
 	public void setDel(boolean del) {
 		this.del = del;
 	}
-	
+
 }

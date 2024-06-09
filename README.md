@@ -18,8 +18,12 @@
 
 ## 機台(基本資料)
 
-點擊機台名稱獲取機台基本資料
+點擊機台名稱獲取該機台基本資料、維修紀錄、績效分析
 ![image](https://github.com/daidai12332/screw/blob/main/img/%E6%A9%9F%E5%8F%B0(%E5%9F%BA%E6%9C%AC%E8%B3%87%E6%96%99).png)
+
+![image](https://github.com/daidai12332/screw/blob/main/img/%E6%A9%9F%E5%8F%B0(%E7%B6%AD%E4%BF%AE%E7%B4%80%E9%8C%84).png)
+
+![image](https://github.com/daidai12332/screw/blob/main/img/%E6%A9%9F%E5%8F%B0(%E7%B8%BE%E6%95%88%E5%88%86%E6%9E%90).png)
 
 
 

@@ -13,7 +13,7 @@
 後端 : Java 、Spring Boot 、MySQL 
 
 ## 資料接收
-使用 Socket Server 透過 vpn 接收遠端電腦傳遞的資料
+使用 Socket Server 透過 vpn 接收遠端電腦傳遞的機台與單號各項資料
 
 ## 首頁
 

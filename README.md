@@ -12,14 +12,17 @@
 
 後端 : Java 、Spring Boot 、MySQL 
 
+## 資料接收
+使用 Socket Server 透過 vpn 接收遠端電腦傳遞的資料
+
 ## 首頁
 
-顯示機台、訂單與生產趨勢的各項資料
+抓取資料庫內機台、訂單與生產趨勢的各項資料
 ![image](https://github.com/daidai12332/screw/blob/main/img/%E9%A6%96%E9%A0%81.png)
 
 ## 機台
 
-點擊機台名稱獲取該機台的基本資料、維修紀錄、績效分析
+用機台名稱從資料庫獲取該機台的基本資料、維修紀錄、績效分析
 
 ![image](https://github.com/daidai12332/screw/blob/main/img/%E6%A9%9F%E5%8F%B0(%E5%9F%BA%E6%9C%AC%E8%B3%87%E6%96%99).png)
 
@@ -29,7 +32,7 @@
 
 ## 訂單
 
-點擊單號獲取該筆訂單的訂單資料、製造資訊、績效分析
+用單號從資料庫獲取該筆訂單的訂單資料、製造資訊、績效分析
 
 ![image](https://github.com/daidai12332/screw/blob/main/img/%E8%A8%82%E5%96%AE(%E8%A8%82%E5%96%AE%E8%B3%87%E6%96%99).png)
 
